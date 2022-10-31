@@ -2,8 +2,6 @@
 import shutil
 import os
 import yaml
-
-
 # replace text json to oraxen
 def replace_text_json(dir,namespce,filename):
   if filename.endswith(".json"):
@@ -60,7 +58,6 @@ for get_namespace in os.listdir(itemadder):
                     os.mkdir("./Oraxen/pack/textures/"+get_namespace+"/"+get_models)
                 shutil.copy(itemadder+"/"+get_namespace+"/textures/"+get_models+"/"+get_models_2,"./Oraxen/pack/textures/"+get_namespace+"/"+get_models+"/"+get_models_2)
                 print("copy "+itemadder+"/"+get_namespace+"/textures/"+get_models+"/"+get_models_2)
-
 # item pack to oraxen
 itemadder = './ItemsAdder/data/items_packs'
 for get_namespace in os.listdir(itemadder):
