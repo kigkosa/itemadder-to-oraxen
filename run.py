@@ -101,7 +101,4 @@ for get_namespace in os.listdir(itemadder):
                     documents['items'][key]['Pack']['model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']
                 with open(r'Oraxen\\items\\'+get_file, 'w') as file:
                     documents = yaml.dump(documents['items'], file)
-                print("Convet file "+get_file)
-      
-
-
+                print("Convet file "+get_file) 
