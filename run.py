@@ -73,6 +73,21 @@ for get_namespace in os.listdir(itemadder):
                     documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
                     
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
+                    if 'behaviours' in documents['items'][key]:
+                        if 'furniture' in documents['items'][key]['behaviours']:
+                            documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
+                            # print(documents['items'][key]['Mechanics']['furniture']['solid'])
+                            if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
+                                if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
+                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
+                                    documents['items'][key]['Mechanics']['furniture'].pop('solid')
+                                else:
+                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = False
+                            else:
+                                documents['items'][key]['Mechanics']['furniture']['barrier'] = False
+                            documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
+                            documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
+
                     if 'model_id' in documents['items'][key]['Pack']:
                         documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                     if 'model_path' in documents['items'][key]['Pack']:
