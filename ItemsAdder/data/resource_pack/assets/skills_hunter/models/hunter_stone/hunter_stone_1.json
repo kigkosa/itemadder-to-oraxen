@@ -1,0 +1,38 @@
+{
+	"credit": "HelloWorld Team",
+	"textures": {
+		"0": "skills_hunter/hunter_stone/hunter_stone_1",
+		"particle": "skills_hunter/hunter_stone/hunter_stone_1"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "texture": "#0"},
+				"east": {"uv": [8, 0, 16, 8], "texture": "#0"},
+				"south": {"uv": [0, 8, 8, 16], "texture": "#0"},
+				"west": {"uv": [8, 8, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#0"},
+				"down": {"uv": [8, 8, 16, 16], "texture": "#0"}
+			}
+		}
+	],
+	"gui_light": "front",
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [-6, 2, 16]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-6, 6, 14],
+			"scale": [2, 2, 2]
+		},
+		"gui": {
+			"translation": [0, 4.25, 0]
+		},
+		"head": {
+			"translation": [0, 5, 0]
+		}
+	}
+}

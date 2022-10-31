@@ -1,0 +1,83 @@
+info:
+  namespace: skills_hunter
+items:
+  hunter_windslash_1:
+    display_name: "hunter_windslash_1"
+    permission: hunter_windslash_1
+    resource:
+      material: PAPER
+      model_id: 1020001
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_1
+  hunter_windslash_2:
+    display_name: "hunter_windslash_2"
+    permission: hunter_windslash_2
+    resource:
+      material: PAPER
+      model_id: 1020002
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_2
+  hunter_windslash_3:
+    display_name: "hunter_windslash_3"
+    permission: hunter_windslash_3
+    resource:
+      material: PAPER
+      model_id: 1020003
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_3
+  hunter_windslash_4:
+    display_name: "hunter_windslash_4"
+    permission: hunter_windslash_4
+    resource:
+      material: PAPER
+      model_id: 1020004
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_4
+  hunter_windslash_5:
+    display_name: "hunter_windslash_5"
+    permission: hunter_windslash_5
+    resource:
+      material: PAPER
+      model_id: 1020005
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_5
+  hunter_windslash_6:
+    display_name: "hunter_windslash_6"
+    permission: hunter_windslash_6
+    resource:
+      material: PAPER
+      model_id: 1020006
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_6
+  hunter_windslash_7:
+    display_name: "hunter_windslash_7"
+    permission: hunter_windslash_7
+    resource:
+      material: PAPER
+      model_id: 1020007
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_7
+  hunter_windslash_8:
+    display_name: "hunter_windslash_8"
+    permission: hunter_windslash_8
+    resource:
+      material: PAPER
+      model_id: 1020008
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_8
+  hunter_windslash_9:
+    display_name: "hunter_windslash_9"
+    permission: hunter_windslash_9
+    resource:
+      material: PAPER
+      model_id: 1020009
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_9
+  hunter_windslash_10:
+    display_name: "hunter_windslash_10"
+    permission: hunter_windslash_10
+    resource:
+      material: PAPER
+      model_id: 1020010
+      generate: false
+      model_path: hunter_windslash/hunter_windslash_10
