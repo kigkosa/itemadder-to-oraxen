@@ -1,8 +1,9 @@
-from argparse import Namespace
-from array import array
+
 import shutil
 import os
 import yaml
+
+
 # replace text json to oraxen
 def replace_text_json(dir,namespce,filename):
   if filename.endswith(".json"):
