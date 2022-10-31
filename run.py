@@ -17,7 +17,8 @@ def replace_text_json(dir,namespce,filename):
 def rename_keys(dict_, new_keys):
     d1 = dict( zip( list(dict_.keys()), new_keys) )
     return {d1[oldK]: value for oldK, value in dict_.items()}
-
+if not os.path.isdir('./ItemsAdder'):
+    os.mkdir('./ItemsAdder') 
 if not os.path.isdir('./Oraxen'):
     os.mkdir('./Oraxen') 
     os.mkdir('./Oraxen/items') 
