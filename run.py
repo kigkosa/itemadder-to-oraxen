@@ -1,4 +1,3 @@
-
 import shutil
 import os
 import yaml
@@ -49,10 +48,10 @@ for get_namespace in os.listdir(itemadder):
                 shutil.copy(itemadder+"/"+get_namespace+"/models/"+get_models+"/"+get_models_2,"./Oraxen/pack/models/"+get_namespace+"/"+get_models+"/"+get_models_2)
                 print("copy "+itemadder+"/"+get_namespace+"/models/"+get_models+"/"+get_models_2)
     for get_models in os.listdir(itemadder+"/"+get_namespace+"/textures"):
-        if get_models.endswith(".png"):
+        if get_models.endswith(".png") or get_models.endswith(".png.mcmeta"):
             shutil.copy(itemadder+"/"+get_namespace+"/textures/"+get_models,"./Oraxen/pack/textures/"+get_namespace)
             print("copy "+itemadder+"/"+get_namespace+"/textures/"+get_models)
-        elif not get_models.endswith(".png"):
+        elif not get_models.endswith("."):
            for get_models_2 in os.listdir(itemadder+"/"+get_namespace+"/textures/"+get_models):
                 if not os.path.isdir("./Oraxen/pack/textures/"+get_namespace+"/"+get_models):
                     os.mkdir("./Oraxen/pack/textures/"+get_namespace+"/"+get_models)
