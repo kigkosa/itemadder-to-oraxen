@@ -111,7 +111,12 @@ for get_namespace in os.listdir(itemadder):
                             if 'SHIELD' in documents['items'][key]['material']:
                                 # documents['items'][key].pop('material')
                                 documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
-                            
+                            elif 'CROSSBOW' in documents['items'][key]['material']:
+                                # documents['items'][key].pop('material')
+                                gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+
+                                documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
+                                documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
                             elif 'BOW' in documents['items'][key]['material']:
                                 # documents['items'][key].pop('material')
                                 gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
@@ -122,12 +127,7 @@ for get_namespace in os.listdir(itemadder):
                                         gnd+'_1',
                                         gnd+'_2'
                                 ]
-                            elif 'CROSSBOW' in documents['items'][key]['material']:
-                                # documents['items'][key].pop('material')
-                                gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
 
-                                documents['items'][key]['Pack']['charged_model'] = gnd+'_pulling_2'
-                                documents['items'][key]['Pack']['pulling_models'] = [gnd+'_pulling_0',gnd+'_pulling_1',gnd+'_pulling_2']
                             elif 'FISHING_ROD' in documents['items'][key]['material']:
                                 # documents['items'][key].pop('material')
                                 gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
