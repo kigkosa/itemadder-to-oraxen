@@ -4,7 +4,6 @@ import yaml
 
 
 class YmlDumper(yaml.Dumper):
-
     def increase_indent(self, flow=False, indentless=False):
         return super(YmlDumper, self).increase_indent(flow, False)
 # replace text json to oraxen
@@ -166,13 +165,15 @@ for get_namespace in os.listdir(itemadder):
                                 new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1.png")
                                 if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_1.png"):
                                     os.rename(old_file, new_file)
-                                os.remove(old_file)
+                                if os.path.exists(old_file):
+                                    os.remove(old_file)
                             if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings.png"):
                                 old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings.png")
                                 new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2.png")
                                 if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2.png"):
                                     os.rename(old_file_2, new_file_2)
-                                os.remove(old_file_2)
+                                if os.path.exists(old_file_2):
+                                    os.remove(old_file_2)
                                                             
                             # set armor 128x32 config
                             if not os.path.exists(f"Oraxen/settings.yml"):
