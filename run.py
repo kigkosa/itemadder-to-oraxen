@@ -122,21 +122,27 @@ for get_namespace in os.listdir(itemadder):
                             
                             
 
-
+                            old_file = ''
+                            new_file = ''
                             # replace name armor
                             if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_chestplate.png"):
                                 old_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_chestplate.png")
                                 new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1.png")
-                                os.rename(old_file, new_file)
+                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_1.png"):
+                                    os.rename(old_file, new_file)
+                                os.remove(old_file)
                             if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings.png"):
                                 old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings.png")
                                 new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2.png")
-                                os.rename(old_file_2, new_file_2)
+                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2.png"):
+                                    os.rename(old_file_2, new_file_2)
+                                os.remove(old_file_2)
                             
                                 
                             # set armor 128x32 config
                             if not os.path.exists(f"Oraxen/settings.yml"):
-                                shutil.copy(f"Oraxen/Oraxen_settings.yml", f"Oraxen/settings.yml")
+                                shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
+
                             # documents['items'][key]['Pack']['textures'].append(a_text)
                 with open(r'Oraxen\\items\\'+get_file, 'w') as file:
                     documents = yaml.dump(documents['items'], file)
