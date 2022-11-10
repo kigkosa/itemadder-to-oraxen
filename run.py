@@ -1,6 +1,12 @@
 import shutil
 import os
 import yaml
+
+
+class YmlDumper(yaml.Dumper):
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super(YmlDumper, self).increase_indent(flow, False)
 # replace text json to oraxen
 def replace_text_json(dir,namespce,filename):
   if filename.endswith(".json"):
@@ -72,7 +78,7 @@ for get_namespace in os.listdir(itemadder):
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
                     if documents['items'][key]['Pack']['generate_model'] == False:
                         documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
-                        
+
                         if 'behaviours' in documents['items'][key]:
                             if 'furniture' in documents['items'][key]['behaviours']:
                                 documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
@@ -101,7 +107,36 @@ for get_namespace in os.listdir(itemadder):
                         if 'hat' in documents['items'][key]:
                             documents['items'][key]['hat'] = {'enabled': True}
                             # documents['items'][key].pop('hat')
+                        if  'material' in documents['items'][key]:
+                            if 'SHIELD' in documents['items'][key]['material']:
+                                # documents['items'][key].pop('material')
+                                documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
                             
+                            elif 'BOW' in documents['items'][key]['material']:
+                                # documents['items'][key].pop('material')
+                                gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+
+                                # documents['items'][key]['Pack']['charged_model'] = gnd+'_pulling_2'
+                                documents['items'][key]['Pack']['pulling_models'] = [
+                                    gnd+'_0',
+                                        gnd+'_1',
+                                        gnd+'_2'
+                                ]
+                            elif 'CROSSBOW' in documents['items'][key]['material']:
+                                # documents['items'][key].pop('material')
+                                gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+
+                                documents['items'][key]['Pack']['charged_model'] = gnd+'_pulling_2'
+                                documents['items'][key]['Pack']['pulling_models'] = [gnd+'_pulling_0',gnd+'_pulling_1',gnd+'_pulling_2']
+                            elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                # documents['items'][key].pop('material')
+                                gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+
+                                documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
+                                # documents['items'][key]['pulling_models'] = [gnd+'_pulling_0',gnd+'_pulling_1',gnd+'_pulling_2']
+
+
+
                         documents['items'][key]['Pack']['model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']
                         
                     else:
@@ -137,13 +172,11 @@ for get_namespace in os.listdir(itemadder):
                                 if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2.png"):
                                     os.rename(old_file_2, new_file_2)
                                 os.remove(old_file_2)
-                            
-                                
+                                                            
                             # set armor 128x32 config
                             if not os.path.exists(f"Oraxen/settings.yml"):
                                 shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
-
-                            # documents['items'][key]['Pack']['textures'].append(a_text)
+                            
                 with open(r'Oraxen\\items\\'+get_file, 'w') as file:
-                    documents = yaml.dump(documents['items'], file)
+                    documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
                 print("Convet file "+get_file) 
