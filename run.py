@@ -99,6 +99,7 @@ for get_namespace in os.listdir(itemadder):
                                     documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
                                 documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
+                                documents['items'][key]['material'] = "PAPER"
 
                         if 'model_id' in documents['items'][key]['Pack']:
                             documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
