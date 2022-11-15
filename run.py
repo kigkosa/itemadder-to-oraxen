@@ -122,6 +122,9 @@ for get_namespace in os.listdir(itemadder):
                                     documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
                                 if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
                                     documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
+                                if 'furniture_sit' in documents['items'][key]['Mechanics']:
+                                    furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
+                                    documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
                                 documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
                                 documents['items'][key]['material'] = "PAPER"
