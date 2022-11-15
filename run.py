@@ -22,7 +22,7 @@ def rename_keys(dict_, new_keys):
 
 def color_to_hex(bb):
     color = {'4':'AA0000','c':'FF5555','6':'FFAA00','e':'FFFF55','2':'00AA00','a':'55FF55','b':'55FFFF','3':'00AAAA','1':'0000AA','9':'5555FF','d':'FF55FF','5':'AA00AA','f':'FFFFFF','7':'AAAAAA','8':'555555','0':'000000'}
-    tex = {'l':'bond','k':'obfuscated','m':'strikethrough','n':'underline','o':'italic','r':'reset'}
+    tex = {'l':'bond','k':'obfuscated','m':'strikethrough','n':'u','o':'italic','r':'reset'}
 
     h_co_s = {'§'+str(co):'#'+v for co,v in color.items()}   
     h_co_s.update({'§'+str(co):v for co,v in tex.items()})
