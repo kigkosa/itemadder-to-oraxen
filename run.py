@@ -112,6 +112,9 @@ for get_namespace in os.listdir(itemadder):
                                     if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
                                         documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
                                         documents['items'][key]['Mechanics']['furniture'].pop('solid')
+                                    elif documents['items'][key]['Mechanics']['furniture']['solid'] == False:
+                                        documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
+                                        documents['items'][key]['Mechanics']['furniture'].pop('solid')                                        
                                     else:
                                         documents['items'][key]['Mechanics']['furniture']['barrier'] = False
                                 else:
@@ -125,6 +128,7 @@ for get_namespace in os.listdir(itemadder):
                                 if 'furniture_sit' in documents['items'][key]['Mechanics']:
                                     furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
                                     documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
+                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = True
                                 documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
                                 documents['items'][key]['material'] = "PAPER"
