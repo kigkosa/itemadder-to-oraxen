@@ -19,6 +19,24 @@ def replace_text_json(dir,namespce,filename):
 def rename_keys(dict_, new_keys):
     d1 = dict( zip( list(dict_.keys()), new_keys) )
     return {d1[oldK]: value for oldK, value in dict_.items()}
+
+def color_to_hex(bb):
+    color = {'4':'AA0000','c':'FF5555','6':'FFAA00','e':'FFFF55','2':'00AA00','a':'55FF55','b':'55FFFF','3':'00AAAA','1':'0000AA','9':'5555FF','d':'FF55FF','5':'AA00AA','f':'FFFFFF','7':'AAAAAA','8':'555555','0':'000000'}
+    tex = {'l':'bond','k':'obfuscated','m':'strikethrough','n':'underline','o':'italic','r':'reset'}
+
+    h_co_s = {'§'+str(co):'#'+v for co,v in color.items()}   
+    h_co_s.update({'§'+str(co):v for co,v in tex.items()})
+    h_co_and = {'&'+str(co):'#'+v for co,v in color.items()}   
+    h_co_and.update({'&'+str(co):v for co,v in tex.items()})
+    
+    for v,c in h_co_s.items():        
+        bb=bb.replace(v,'<'+c+'>')
+    for v,c in h_co_and.items():
+        bb=bb.replace(v,'<'+c+'>')
+        
+
+    return bb
+    # print(color)
 if not os.path.isdir('./ItemsAdder'):
     os.mkdir('./ItemsAdder') 
     os.mkdir('./ItemsAdder/data') 
@@ -75,8 +93,14 @@ for get_namespace in os.listdir(itemadder):
             if  'items' in documents:
                 for key in documents['items']:
                     documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
-                    documents['items'][key]['displayname'] = documents['items'][key].pop('display_name')
+                    documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name'))
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
+                    if 'lore' in documents['items'][key]:
+                        lore = documents['items'][key].pop('lore')
+                        l = []
+                        for v in lore:
+                            l.append(color_to_hex(v))
+                        documents['items'][key]['lore'] = l
                     if documents['items'][key]['Pack']['generate_model'] == False:
                         documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
 
