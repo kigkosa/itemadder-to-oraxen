@@ -179,7 +179,7 @@ for get_namespace in os.listdir(itemadder):
                                 a_text = get_namespace+"/"+documents['items'][key]['Pack']['textures'][0]
                                 documents['items'][key]['Pack']['textures'] = [a_text,a_text]
 
-                                list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots"}
+                                list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
                                 
                                 documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
                 
