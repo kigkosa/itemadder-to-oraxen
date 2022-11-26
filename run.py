@@ -57,11 +57,11 @@ for get_namespace in os.listdir(itemadder):
         os.mkdir('./Oraxen/pack/textures/'+get_namespace)
     #get all sound
     if os.path.isdir(itemadder+"/"+get_namespace+"/sounds"):
-        os.mkdir('./Oraxen/pack/sounds')
-        for get_sound in os.listdir(itemadder+"/"+get_namespace+"/sounds"):
-            if get_sound.endswith(".ogg"):
-                shutil.copy(itemadder+"/"+get_namespace+"/sounds/"+get_sound,'./Oraxen/pack/sounds/'+get_sound)
-                print("sound coppy "+itemadder+"/"+get_namespace+"/sounds/"+get_sound,'./Oraxen/pack/sounds/'+get_sound)
+        os.mkdir('./Oraxen/pack/assets')
+        os.mkdir('./Oraxen/pack/assets/'+get_namespace)
+        shutil.copytree(itemadder+"/"+get_namespace+"/sounds","./Oraxen/pack/assets/"+get_namespace+"/sounds")
+        shutil.copy(itemadder+"/"+get_namespace+"/sounds.json","./Oraxen/pack/assets/"+get_namespace)
+
             
     # get all model json replace
     for file in glob.glob(itemadder+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
