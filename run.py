@@ -1,7 +1,7 @@
 import shutil
 import os
 import yaml
-
+import glob
 
 class YmlDumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
@@ -55,34 +55,34 @@ for get_namespace in os.listdir(itemadder):
     if not os.path.isdir('./Oraxen/pack/models/'+get_namespace):
         os.mkdir('./Oraxen/pack/models/'+get_namespace)
         os.mkdir('./Oraxen/pack/textures/'+get_namespace)
-
+    #get all sound
+    if os.path.isdir(itemadder+"/"+get_namespace+"/sounds"):
+        os.mkdir('./Oraxen/pack/sounds')
+        for get_sound in os.listdir(itemadder+"/"+get_namespace+"/sounds"):
+            if get_sound.endswith(".ogg"):
+                shutil.copy(itemadder+"/"+get_namespace+"/sounds/"+get_sound,'./Oraxen/pack/sounds/'+get_sound)
+                print("sound coppy "+itemadder+"/"+get_namespace+"/sounds/"+get_sound,'./Oraxen/pack/sounds/'+get_sound)
+            
     # get all model json replace
-    for get_models in os.listdir(itemadder+"/"+get_namespace+"/models"):
-        replace_text_json(itemadder+"/"+get_namespace+"/models/"+get_models,get_namespace,get_models)
-        if not get_models.endswith(".json"):
-           for get_models_2 in os.listdir(itemadder+"/"+get_namespace+"/models/"+get_models):
-                replace_text_json(itemadder+"/"+get_namespace+"/models/"+get_models+"/"+get_models_2,get_namespace,get_models_2)
+    for file in glob.glob(itemadder+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
+        get_models = file.replace('\\','/')
+        replace_text_json(get_models,get_namespace,get_models)
+
+
     # get all model json coppy
-    for get_models in os.listdir(itemadder+"/"+get_namespace+"/models"):
-        if get_models.endswith(".json"):
-            shutil.copy(itemadder+"/"+get_namespace+"/models/"+get_models,"./Oraxen/pack/models/"+get_namespace)
-            print("copy "+itemadder+"/"+get_namespace+"/models/"+get_models)
-        elif not get_models.endswith(".json"):
-           for get_models_2 in os.listdir(itemadder+"/"+get_namespace+"/models/"+get_models):
-                if not os.path.isdir("./Oraxen/pack/models/"+get_namespace+"/"+get_models):
-                    os.mkdir("./Oraxen/pack/models/"+get_namespace+"/"+get_models)
-                shutil.copy(itemadder+"/"+get_namespace+"/models/"+get_models+"/"+get_models_2,"./Oraxen/pack/models/"+get_namespace+"/"+get_models+"/"+get_models_2)
-                print("copy "+itemadder+"/"+get_namespace+"/models/"+get_models+"/"+get_models_2)
-    for get_models in os.listdir(itemadder+"/"+get_namespace+"/textures"):
-        if get_models.endswith(".png") or get_models.endswith(".png.mcmeta"):
-            shutil.copy(itemadder+"/"+get_namespace+"/textures/"+get_models,"./Oraxen/pack/textures/"+get_namespace)
-            print("copy "+itemadder+"/"+get_namespace+"/textures/"+get_models)
-        elif not get_models.endswith("."):
-           for get_models_2 in os.listdir(itemadder+"/"+get_namespace+"/textures/"+get_models):
-                if not os.path.isdir("./Oraxen/pack/textures/"+get_namespace+"/"+get_models):
-                    os.mkdir("./Oraxen/pack/textures/"+get_namespace+"/"+get_models)
-                shutil.copy(itemadder+"/"+get_namespace+"/textures/"+get_models+"/"+get_models_2,"./Oraxen/pack/textures/"+get_namespace+"/"+get_models+"/"+get_models_2)
-                print("copy "+itemadder+"/"+get_namespace+"/textures/"+get_models+"/"+get_models_2)
+    if os.path.isdir("./Oraxen/pack/models/"+get_namespace):
+        shutil.rmtree("./Oraxen/pack/models/"+get_namespace)
+    if os.path.isdir(itemadder+"/"+get_namespace+"/models"):
+        shutil.copytree(itemadder+"/"+get_namespace+"/models","./Oraxen/pack/models/"+get_namespace)
+
+    # coppy textures
+    if os.path.isdir("./Oraxen/pack/textures/"+get_namespace):
+        shutil.rmtree("./Oraxen/pack/textures/"+get_namespace)
+    if os.path.isdir(itemadder+"/"+get_namespace+"/textures"):
+        shutil.copytree(itemadder+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
+
+
+   
 # item pack to oraxen
 itemadder = './ItemsAdder/data/items_packs'
 for get_namespace in os.listdir(itemadder):
@@ -92,6 +92,8 @@ for get_namespace in os.listdir(itemadder):
             documents = yaml.full_load(file)
             if  'items' in documents:
                 for key in documents['items']:
+                    if 'suggest_in_command' in documents['items'][key] :
+                        documents['items'][key].pop('suggest_in_command')
                     documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
                     documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name'))
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
@@ -215,4 +217,4 @@ for get_namespace in os.listdir(itemadder):
                             
                 with open(r'Oraxen\\items\\'+get_file, 'w') as file:
                     documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
-                print("Convet file "+get_file) 
+                print("Convet file "+get_file)             
