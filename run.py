@@ -148,6 +148,10 @@ for get_namespace in os.listdir(itemadder):
                                     if 'ceiling' in pn:
                                         documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
+                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
+                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['block_types'] = ['AIR']
+                                    
+
                                 if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
                                     documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
                                 if 'furniture_sit' in documents['items'][key]['Mechanics']:
