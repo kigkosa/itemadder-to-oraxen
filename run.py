@@ -40,6 +40,7 @@ def color_to_hex(bb):
 if not os.path.isdir('./ItemsAdder'):
     os.mkdir('./ItemsAdder') 
     os.mkdir('./ItemsAdder/data') 
+    exit()
 if os.path.isdir('./Oraxen'):
     shutil.rmtree('./Oraxen')
 if not os.path.isdir('./Oraxen'):
