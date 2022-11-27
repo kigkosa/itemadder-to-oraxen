@@ -37,6 +37,17 @@ def color_to_hex(bb):
 
     return bb
     # print(color)
+def hitbox(length,width,height):
+    da  = []
+    for le in range(length):
+        for wi in range(width):
+            for he in range(height):
+                da.append("{ x: "+str(wi-1)+", y: "+str(he)+", z: "+str(le)+" }")
+                # print("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
+    # print('d')
+    return da
+
+
 if not os.path.isdir('./ItemsAdder'):
     os.mkdir('./ItemsAdder') 
     os.mkdir('./ItemsAdder/data') 
@@ -123,7 +134,12 @@ for get_namespace in os.listdir(itemadder):
                                 else:
                                     documents['items'][key]['Mechanics']['furniture']['barrier'] = False
                                 if 'hitbox' in documents['items'][key]['Mechanics']['furniture'] :
-                                    documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
+                                    hbt = documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
+                                    documents['items'][key]['Mechanics']['furniture']['barriers'] = hitbox(hbt['length'],hbt['width'],hbt['height'])
+                                    # print(documents['items'][key]['Mechanics']['furniture']['hitbox']['length'])
+                                    # documents['items'][key]['Mechanics']['furniture']['barriers']=hitbox(documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['width'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['height'])
+                                #     documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
+
                                 if 'placeable_on' in documents['items'][key]['Mechanics']['furniture'] :
                                     documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
                                 if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
@@ -216,6 +232,12 @@ for get_namespace in os.listdir(itemadder):
                                 if not os.path.exists(f"Oraxen/settings.yml"):
                                     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
                             
-                with open(r'Oraxen\\items\\'+get_file, 'w') as file:
+                with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
                     documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
+                with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'r') as file :
+                    filedata = file.read()
+                filedata = filedata.replace("'", '')
+                with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
+                    file.write(filedata)
+
                 print("Convet file "+get_file)             
