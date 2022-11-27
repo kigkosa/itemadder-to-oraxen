@@ -3,7 +3,7 @@
 
 
 ## Setup
-* pip install -r requirements.txt
+* pip install -r requirements.txt or py -m  pip install -r requirements.txt
 
 ## Technologies Used
 - python 3
