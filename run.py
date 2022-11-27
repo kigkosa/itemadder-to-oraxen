@@ -42,7 +42,7 @@ def hitbox(length,width,height):
     for le in range(length):
         for wi in range(width):
             for he in range(height):
-                da.append("{ x: "+str(wi-1)+", y: "+str(he)+", z: "+str(le)+" }")
+                da.append("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
                 # print("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
     # print('d')
     return da
@@ -136,12 +136,18 @@ for get_namespace in os.listdir(itemadder):
                                 if 'hitbox' in documents['items'][key]['Mechanics']['furniture'] :
                                     hbt = documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
                                     documents['items'][key]['Mechanics']['furniture']['barriers'] = hitbox(hbt['length'],hbt['width'],hbt['height'])
-                                    # print(documents['items'][key]['Mechanics']['furniture']['hitbox']['length'])
-                                    # documents['items'][key]['Mechanics']['furniture']['barriers']=hitbox(documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['width'],documents['items'][key]['Mechanics']['furniture']['hitbox']['length'],documents['items'][key]['Mechanics']['furniture']['hitbox']['height'])
-                                #     documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
 
                                 if 'placeable_on' in documents['items'][key]['Mechanics']['furniture'] :
-                                    documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
+                                    pn = documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
+                                    documents['items'][key]['Mechanics']['furniture']['limited_placing'] = {}
+                                    if 'walls' in pn:
+                                        # print(pn['walls'])
+                                        documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] = pn['walls']
+                                    if 'floor' in pn:
+                                        documents['items'][key]['Mechanics']['furniture']['limited_placing']['floor'] = pn['floor'] 
+                                    if 'ceiling' in pn:
+                                        documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
+
                                 if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
                                     documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
                                 if 'furniture_sit' in documents['items'][key]['Mechanics']:
