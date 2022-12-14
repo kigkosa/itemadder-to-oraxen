@@ -107,13 +107,12 @@ for get_namespace in os.listdir(itemadder):
                     documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
                     documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name'))
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
-                    # if 'suggest_in_command' in documents['items'][key] :
-                    #     documents['items'][key].pop('suggest_in_command')
+                    if 'suggest_in_command' in documents['items'][key] :
+                        documents['items'][key].pop('suggest_in_command')
          
                 for key in list(documents['items']):
                     
         
-                    
                     if 'lore' in documents['items'][key]:
                         lore = documents['items'][key].pop('lore')
                         l = []
@@ -208,6 +207,7 @@ for get_namespace in os.listdir(itemadder):
                         
                     else:
                         if 'specific_properties' in documents['items'][key]:
+
                             
                             if 'armor' in documents['items'][key]['specific_properties']:
                                 documents['items'][key]['Pack']['parent_model']= "item/generated"
@@ -236,6 +236,15 @@ for get_namespace in os.listdir(itemadder):
                                         os.rename(old_file, new_file)
                                     if os.path.exists(old_file):
                                         os.remove(old_file)
+                                    # emisive
+                                    if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_chestplate_e.png"):
+                                        old_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_chestplate_e.png")
+                                        new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1_e.png")
+                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_1_e.png"):
+                                            os.rename(old_file, new_file)
+                                        if os.path.exists(old_file):
+                                            os.remove(old_file)
+                                    
                                 if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings.png"):
                                     old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings.png")
                                     new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2.png")
@@ -244,9 +253,23 @@ for get_namespace in os.listdir(itemadder):
                                     if os.path.exists(old_file_2):
                                         os.remove(old_file_2)
                                                                 
+                                    if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings_e.png"):
+                                        old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings_e.png")
+                                        new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2_e.png")
+                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2_e.png"):
+                                            os.rename(old_file_2, new_file_2)
+                                        if os.path.exists(old_file_2):
+                                            os.remove(old_file_2)
+                                                                    
                                 # set armor 128x32 config
                                 if not os.path.exists(f"Oraxen/settings.yml"):
                                     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
+                        else:
+                            if 'model_id' in documents['items'][key]['Pack']:
+                                documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
+                            documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
+                            for tr in range(len(documents['items'][key]['Pack']['textures'])):
+                                documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
                 for key in list(documents['items']):
                     if 'specific_properties' in documents['items'][key]:
                         if 'armor' in documents['items'][key]['specific_properties']:
@@ -268,7 +291,6 @@ for get_namespace in os.listdir(itemadder):
 
 
 # mege file
-
 data  = ''
 
 for get_file in os.listdir(r'Oraxen\\items\\'):
