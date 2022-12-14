@@ -103,12 +103,17 @@ for get_namespace in os.listdir(itemadder):
         with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
             documents = yaml.full_load(file)
             if  'items' in documents:
-                for key in documents['items']:
-                    if 'suggest_in_command' in documents['items'][key] :
-                        documents['items'][key].pop('suggest_in_command')
+                for key in list(documents['items']):
                     documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
                     documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name'))
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
+                    # if 'suggest_in_command' in documents['items'][key] :
+                    #     documents['items'][key].pop('suggest_in_command')
+         
+                for key in list(documents['items']):
+                    
+        
+                    
                     if 'lore' in documents['items'][key]:
                         lore = documents['items'][key].pop('lore')
                         l = []
@@ -203,6 +208,7 @@ for get_namespace in os.listdir(itemadder):
                         
                     else:
                         if 'specific_properties' in documents['items'][key]:
+                            
                             if 'armor' in documents['items'][key]['specific_properties']:
                                 documents['items'][key]['Pack']['parent_model']= "item/generated"
                                 a_text = get_namespace+"/"+documents['items'][key]['Pack']['textures'][0]
@@ -211,12 +217,12 @@ for get_namespace in os.listdir(itemadder):
                                 list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
                                 
                                 documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
-                
-                                vv = documents['items'].pop(key)
+                                
+                                # vv = documents['items'].pop(key)
                                 nv = a_text.split("/")[2].split("_")[0]
-                                nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
-                                documents['items'][nk] = vv
-                                documents['items'][nk].pop('specific_properties')
+                                # nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
+                                # documents['items'][nk] = vv
+                                # documents['items'][nk].pop('specific_properties')
                                 
                                 
 
@@ -241,6 +247,14 @@ for get_namespace in os.listdir(itemadder):
                                 # set armor 128x32 config
                                 if not os.path.exists(f"Oraxen/settings.yml"):
                                     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
+                for key in list(documents['items']):
+                    if 'specific_properties' in documents['items'][key]:
+                        if 'armor' in documents['items'][key]['specific_properties']:
+                                vv = documents['items'].pop(key)
+                                nv = a_text.split("/")[2].split("_")[0]
+                                nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
+                                documents['items'][nk] = vv
+                                documents['items'][nk].pop('specific_properties')
                             
                 with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
                     documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
@@ -251,3 +265,16 @@ for get_namespace in os.listdir(itemadder):
                     file.write(filedata)
 
                 print("Convet file "+get_file)             
+
+
+# mege file
+
+data  = ''
+
+for get_file in os.listdir(r'Oraxen\\items\\'):
+        with open(r'Oraxen\\items\\'+get_file, 'r') as file :
+            data += file.read()
+        os.remove(r'Oraxen\\items\\'+get_file)
+with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+    file.write(data)        
+        
