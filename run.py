@@ -105,7 +105,7 @@ for get_namespace in os.listdir(itemadder):
             if  'items' in documents:
                 for key in list(documents['items']):
                     documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
-                    documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name'))
+                    documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name').title() )
                     documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
                     if 'suggest_in_command' in documents['items'][key] :
                         documents['items'][key].pop('suggest_in_command')
@@ -212,6 +212,7 @@ for get_namespace in os.listdir(itemadder):
                             if 'armor' in documents['items'][key]['specific_properties']:
                                 documents['items'][key]['Pack']['parent_model']= "item/generated"
                                 a_text = get_namespace+"/"+documents['items'][key]['Pack']['textures'][0]
+                               
                                 documents['items'][key]['Pack']['textures'] = [a_text,a_text]
 
                                 list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
@@ -219,6 +220,7 @@ for get_namespace in os.listdir(itemadder):
                                 documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
                                 
                                 # vv = documents['items'].pop(key)
+                                # print(a_text)
                                 nv = a_text.split("/")[2].split("_")[0]
                                 # nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
                                 # documents['items'][nk] = vv
@@ -229,6 +231,14 @@ for get_namespace in os.listdir(itemadder):
                                 old_file = ''
                                 new_file = ''
                                 # replace name armor
+                                colors = [] 
+                                for na in documents['armors_rendering']:
+                                    hex = documents['armors_rendering'][na]['color'].lstrip('#')
+                                    colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+                                    print(documents['armors_rendering'][na])
+                                documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
+              
+                                
                                 if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_chestplate.png"):
                                     old_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_chestplate.png")
                                     new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1.png")
@@ -291,12 +301,11 @@ for get_namespace in os.listdir(itemadder):
 
 
 # mege file
-data  = ''
-
-for get_file in os.listdir(r'Oraxen\\items\\'):
-        with open(r'Oraxen\\items\\'+get_file, 'r') as file :
-            data += file.read()
-        os.remove(r'Oraxen\\items\\'+get_file)
-with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
-    file.write(data)        
+# data  = ''
+# for get_file in os.listdir(r'Oraxen\\items\\'):
+#         with open(r'Oraxen\\items\\'+get_file, 'r') as file :
+#             data += file.read()
+#         os.remove(r'Oraxen\\items\\'+get_file)
+# with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+#     file.write(data)        
         
