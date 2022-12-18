@@ -301,11 +301,11 @@ for get_namespace in os.listdir(itemadder):
 
 
 # mege file
-# data  = ''
-# for get_file in os.listdir(r'Oraxen\\items\\'):
-#         with open(r'Oraxen\\items\\'+get_file, 'r') as file :
-#             data += file.read()
-#         os.remove(r'Oraxen\\items\\'+get_file)
-# with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
-#     file.write(data)        
+data  = ''
+for get_file in os.listdir(r'Oraxen\\items\\'):
+        with open(r'Oraxen\\items\\'+get_file, 'r') as file :
+            data += file.read()
+        os.remove(r'Oraxen\\items\\'+get_file)
+with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+    file.write(data)        
         
