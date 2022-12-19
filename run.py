@@ -52,6 +52,19 @@ if not os.path.isdir('./ItemsAdder'):
     os.mkdir('./ItemsAdder') 
     os.mkdir('./ItemsAdder/data') 
     exit()
+if os.path.isdir('./ItemsAdder/contents'):
+    if os.path.isdir('./ItemsAdder/data'):
+        shutil.rmtree('./ItemsAdder/data')
+        os.mkdir('./ItemsAdder/data') 
+        os.mkdir('./ItemsAdder/data/items_packs')
+
+         
+    for get_namespace in os.listdir('./ItemsAdder/contents'):
+        shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
+        shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
+        # print(get_namespace)
+    shutil.rmtree('./ItemsAdder/contents')
+# exit()
 if os.path.isdir('./Oraxen'):
     shutil.rmtree('./Oraxen')
 if not os.path.isdir('./Oraxen'):
@@ -235,7 +248,7 @@ for get_namespace in os.listdir(itemadder):
                                 for na in documents['armors_rendering']:
                                     hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                     colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                    print(documents['armors_rendering'][na])
+                                    # print(documents['armors_rendering'][na])
                                 documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
               
                                 
