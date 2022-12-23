@@ -36,15 +36,13 @@ def color_to_hex(bb):
         
 
     return bb
-    # print(color)
 def hitbox(length,width,height):
     da  = []
     for le in range(length):
         for wi in range(width):
             for he in range(height):
                 da.append("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
-                # print("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
-    # print('d')
+
     return da
 
 
@@ -138,7 +136,6 @@ for get_namespace in os.listdir(itemadder):
                         if 'behaviours' in documents['items'][key]:
                             if 'furniture' in documents['items'][key]['behaviours']:
                                 documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
-                                # print(documents['items'][key]['Mechanics']['furniture']['solid'])
                                 if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
                                     if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
                                         documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
@@ -158,7 +155,6 @@ for get_namespace in os.listdir(itemadder):
                                     pn = documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
                                     documents['items'][key]['Mechanics']['furniture']['limited_placing'] = {}
                                     if 'walls' in pn:
-                                        # print(pn['walls'])
                                         documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] = pn['walls']
                                     if 'floor' in pn:
                                         documents['items'][key]['Mechanics']['furniture']['limited_placing']['floor'] = pn['floor'] 
@@ -296,5 +292,4 @@ for get_file in os.listdir(r'Oraxen\\items\\'):
             data += file.read()
         os.remove(r'Oraxen\\items\\'+get_file)
 with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
-    file.write(data)        
-        
+    file.write(data)               
