@@ -223,23 +223,20 @@ for get_namespace in os.listdir(itemadder):
 
                             
                             if 'armor' in documents['items'][key]['specific_properties']:
+                                namespace_split = get_namespace.split("_")[0]
+                                list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
+
+                                # print(list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']])
+                                os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
                                 documents['items'][key]['Pack']['parent_model']= "item/generated"
-                                a_text = get_namespace+"/"+documents['items'][key]['Pack']['textures'][0]
+                                a_text = get_namespace+"/"+f"armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png"
                                
                                 documents['items'][key]['Pack']['textures'] = [a_text,a_text]
 
-                                list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
                                 
                                 documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
                                 
-                                # vv = documents['items'].pop(key)
-                                # print(a_text)
-                                nv = a_text.split("/")[2].split("_")[0]
-                                # nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
-                                # documents['items'][nk] = vv
-                                # documents['items'][nk].pop('specific_properties')
-                                
-                                
+                                nv = a_text.split("/")[2].split("_")[0]                                
 
                                 old_file = ''
                                 new_file = ''
@@ -248,42 +245,23 @@ for get_namespace in os.listdir(itemadder):
                                 for na in documents['armors_rendering']:
                                     hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                     colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                    # print(documents['armors_rendering'][na])
+                                    # tn = documents['armors_rendering'][na]['layer_1'].split("/")
+                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
+                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png")
+                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png"):
+                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png")
+                                    if 'emissive_1' in documents['armors_rendering'][na]:
+                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png"):
+                                            os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png")
+                                    if 'emissive_2' in documents['armors_rendering'][na]:
+                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png"):
+                                            os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png")
+
                                 documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
-              
+                               
                                 
-                                if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_chestplate.png"):
-                                    old_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_chestplate.png")
-                                    new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1.png")
-                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_1.png"):
-                                        os.rename(old_file, new_file)
-                                    if os.path.exists(old_file):
-                                        os.remove(old_file)
-                                    # emisive
-                                    if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_chestplate_e.png"):
-                                        old_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_chestplate_e.png")
-                                        new_file = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_1_e.png")
-                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_1_e.png"):
-                                            os.rename(old_file, new_file)
-                                        if os.path.exists(old_file):
-                                            os.remove(old_file)
-                                    
-                                if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings.png"):
-                                    old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings.png")
-                                    new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2.png")
-                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2.png"):
-                                        os.rename(old_file_2, new_file_2)
-                                    if os.path.exists(old_file_2):
-                                        os.remove(old_file_2)
-                                                                
-                                    if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_leggings_e.png"):
-                                        old_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_leggings_e.png")
-                                        new_file_2 = os.path.join(f"Oraxen/pack/textures/{get_namespace}/armor", f"{nv}_armor_layer_2_e.png")
-                                        if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{nv}_armor_layer_2_e.png"):
-                                            os.rename(old_file_2, new_file_2)
-                                        if os.path.exists(old_file_2):
-                                            os.remove(old_file_2)
-                                                                    
+
+   
                                 # set armor 128x32 config
                                 if not os.path.exists(f"Oraxen/settings.yml"):
                                     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
@@ -311,8 +289,6 @@ for get_namespace in os.listdir(itemadder):
                     file.write(filedata)
 
                 print("Convet file "+get_file)             
-
-
 # mege file
 data  = ''
 for get_file in os.listdir(r'Oraxen\\items\\'):
