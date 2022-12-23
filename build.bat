@@ -1,0 +1,1 @@
+pyinstaller.exe --icon=icon.png -F --onefile --windowed run.py
