@@ -59,7 +59,11 @@ if os.path.isdir('./ItemsAdder/contents'):
          
     for get_namespace in os.listdir('./ItemsAdder/contents'):
         shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
-        shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
+        if os.path.isdir('./ItemsAdder/contents/'+get_namespace+'/resourcepack/assets'):
+            shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
+        else:
+            shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack/assets')
+
         # print(get_namespace)
     shutil.rmtree('./ItemsAdder/contents')
 # exit()
