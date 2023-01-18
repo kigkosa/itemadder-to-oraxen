@@ -139,6 +139,9 @@ for get_namespace in os.listdir(itemadder):
 
                         if 'behaviours' in documents['items'][key]:
                             if 'furniture' in documents['items'][key]['behaviours']:
+                                if 'entity' in documents['items'][key]['behaviours']['furniture']:
+                                    documents['items'][key]['behaviours']['furniture'].pop('entity')
+
                                 documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
                                 if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
                                     if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
@@ -166,7 +169,7 @@ for get_namespace in os.listdir(itemadder):
                                         documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
                                     documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
-                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['block_types'] = ['AIR']
+                                    # documents['items'][key]['Mechanics']['furniture']['limited_placing']['block_types'] = ['AIR']
                                     
 
                                 if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
@@ -175,9 +178,15 @@ for get_namespace in os.listdir(itemadder):
                                     furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
                                     documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
                                     documents['items'][key]['Mechanics']['furniture']['barrier'] = True
-                                documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
+                                # documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
                                 documents['items'][key]['material'] = "PAPER"
+
+
+                                # ROTATION to none
+                                if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
+                                    documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
+                                    documents['items'][key]['Mechanics']['furniture'].pop('barriers')
 
                         if 'model_id' in documents['items'][key]['Pack']:
                             documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
