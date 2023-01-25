@@ -5,11 +5,20 @@ import shutil
 import os
 import yaml
 import glob
+import requests
 
 class App:
     def __init__(self, root):
+        if not os.path.isdir('./Oraxen_settings.yml'):
+            with open('Oraxen_settings.yml', 'wb') as f:
+                f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/Oraxen_settings.yml').content)
+        if not os.path.isdir('./icon.ico'):
+            with open('icon.ico', 'wb') as f:
+                f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/icon.ico').content)
         #setting title
         root.title("Itemadder to Oraxen")
+
+        
         root.iconbitmap("icon.ico")
         #setting window size
         width=248
