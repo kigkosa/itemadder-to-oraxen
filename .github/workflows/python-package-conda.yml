@@ -20,5 +20,5 @@ jobs:
         path: "requirements.txt"
 
     - name: test python
-      run: py run.py
+      run: python run.py
 
