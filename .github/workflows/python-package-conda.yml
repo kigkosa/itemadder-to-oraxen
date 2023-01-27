@@ -19,6 +19,6 @@ jobs:
       with:
         path: "requirements.txt"
 
-    - name: Display Python version
-      run: python run.py
+    - name: test python
+      run: py run.py
 
