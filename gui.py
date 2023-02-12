@@ -199,13 +199,15 @@ class App:
                                 if 'model_path' in documents['items'][key]['Pack']:
                                     documents['items'][key]['Pack']['model'] = documents['items'][key]['Pack'].pop('model_path')
                                 if 'hat' in documents['items'][key]:
-                                    documents['items'][key]['hat'] = {'enabled': True}
+                                    documents['items'][key]['Mechanics'] = {}
+                                    documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
                                 if 'behaviours' in documents['items'][key]:
                                     if 'hat' in documents['items'][key]['behaviours']:
                                         if documents['items'][key]['behaviours']['hat'] == True:
                                             documents['items'][key]['behaviours'].pop('hat')
                                             documents['items'][key].pop('behaviours')
-                                            documents['items'][key]['hat'] = {'enabled': True}
+                                            documents['items'][key]['Mechanics'] = {}
+                                            documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
                                     # documents['items'][key].pop('hat')
                                 if  'material' in documents['items'][key]:
                                     if 'SHIELD' in documents['items'][key]['material']:
