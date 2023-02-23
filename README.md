@@ -4,7 +4,7 @@
 
 💖 Consider donating if we helped you:
 <br>
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E7H4IUH)
+<a href="https://ko-fi.com/kigkosa" target="_blank"> <img src="https://ko-fi.com/img/githubbutton_sm.svg"></a>
 <br><br>
 <a href="https://github.com/kigkosa/itemadder-to-oraxen/commits"> <img src="https://img.shields.io/github/last-commit/kigkosa/itemadder-to-oraxen"></a>
 <a href="#"> <img src="https://img.shields.io/github/languages/code-size/kigkosa/itemadder-to-oraxen"></a>
