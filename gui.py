@@ -231,11 +231,9 @@ class App:
                                         ]
 
                                     elif 'FISHING_ROD' in documents['items'][key]['material']:
-                                        # documents['items'][key].pop('material')
                                         gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
 
                                         documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
-                                        # documents['items'][key]['pulling_models'] = [gnd+'_pulling_0',gnd+'_pulling_1',gnd+'_pulling_2']
 
 
 
@@ -289,11 +287,33 @@ class App:
                                         if not os.path.exists(f"Oraxen/settings.yml"):
                                             shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
                                 else:
+                                   
+                                    
                                     if 'model_id' in documents['items'][key]['Pack']:
                                         documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                                     documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
                                     for tr in range(len(documents['items'][key]['Pack']['textures'])):
                                         documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
+                                    if 'SHIELD' in documents['items'][key]['material']:
+                                        documents['items'][key]['Pack']['blocking_model'] = documents['items'][key]['Pack']['textures'][0]+'_blocking'
+                                    elif 'CROSSBOW' in documents['items'][key]['material']:
+                                        gnd = documents['items'][key]['Pack']['textures'][0]
+
+                                        documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
+                                        documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
+                                    elif 'BOW' in documents['items'][key]['material']:
+                                        gnd = documents['items'][key]['Pack']['textures'][0]
+                                        documents['items'][key]['Pack']["model"] = "default/combat_bow"
+                                        documents['items'][key]['Pack']['pulling_models'] = [
+                                            gnd+'_0',
+                                                gnd+'_1',
+                                                gnd+'_2'
+                                        ]
+
+                                    elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                        gnd = documents['items'][key]['Pack']['textures'][0]
+
+                                        documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
                         for key in list(documents['items']):
                             if 'specific_properties' in documents['items'][key]:
                                 if 'armor' in documents['items'][key]['specific_properties']:

@@ -2,6 +2,16 @@
 > Give away free to convert itemadder to oraxen
 
 
+💖 Consider donating if we helped you:
+<br>
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E7H4IUH)
+<br><br>
+<a href="https://github.com/kigkosa/itemadder-to-oraxen/commits"> <img src="https://img.shields.io/github/last-commit/kigkosa/itemadder-to-oraxen"></a>
+<a href="#"> <img src="https://img.shields.io/github/languages/code-size/kigkosa/itemadder-to-oraxen"></a>
+<a href="https://github.com/kigkosa/itemadder-to-oraxen/watchers"> <img src="https://img.shields.io/github/watchers/kigkosa/itemadder-to-oraxen"></a>
+<a href="https://github.com/kigkosa/itemadder-to-oraxen/stargazers"> <img src="https://img.shields.io/github/stars/kigkosa/itemadder-to-oraxen"></a>
+<a href="https://github.com/kigkosa/itemadder-to-oraxen/network/members"> <img src="https://img.shields.io/github/forks/kigkosa/itemadder-to-oraxen"></a>
+
 ## Setup
 * pip install -r requirements.txt or py -m  pip install -r requirements.txt
 
