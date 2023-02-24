@@ -306,7 +306,7 @@ class App:
                                         documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
                                     elif 'BOW' in documents['items'][key]['material']:
                                         gnd = documents['items'][key]['Pack']['textures'][0]
-                                        documents['items'][key]['Pack']["model"] = "default/bow"
+                                        documents['items'][key]['Pack']["parent_model"] = "item/bow"
                                         documents['items'][key]['Pack']['pulling_models'] = [
                                             gnd+'_0',
                                                 gnd+'_1',
