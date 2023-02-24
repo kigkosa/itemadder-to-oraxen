@@ -222,6 +222,8 @@ class App:
                                     elif 'BOW' in documents['items'][key]['material']:
                                         # documents['items'][key].pop('material')
                                         gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+                                        
+
 
                                         # documents['items'][key]['Pack']['charged_model'] = gnd+'_pulling_2'
                                         documents['items'][key]['Pack']['pulling_models'] = [
@@ -229,6 +231,7 @@ class App:
                                                 gnd+'_1',
                                                 gnd+'_2'
                                         ]
+                                        
 
                                     elif 'FISHING_ROD' in documents['items'][key]['material']:
                                         gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
@@ -309,6 +312,9 @@ class App:
                                                 gnd+'_1',
                                                 gnd+'_2'
                                         ]
+                                        for tr in documents['items'][key]['Pack']['pulling_models']:
+                                            with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
+                                                f.write('{"parent":"minecraft:item/bow","textures":{"layer0":"'+tr+'"}}')
 
                                     elif 'FISHING_ROD' in documents['items'][key]['material']:
                                         gnd = documents['items'][key]['Pack']['textures'][0]
