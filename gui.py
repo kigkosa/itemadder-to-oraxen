@@ -1,4 +1,6 @@
+import json
 import tkinter as tk
+from tkinter import ttk
 import tkinter.font as tkFont
 from tkinter import messagebox 
 import shutil
@@ -16,7 +18,7 @@ class App:
             with open('icon.ico', 'wb') as f:
                 f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/icon.ico').content)
         #setting title
-        root.title("Itemadder to Oraxen")
+        root.title("Convert Itemadder to Oraxen")
 
         
         root.iconbitmap("icon.ico")
@@ -47,12 +49,19 @@ class App:
         self.GLabel_225["text"] = ""
         self.GLabel_225.place(x=10,y=10,width=249,height=30)
 
+
+        # add progress bar
+        self.progress = tk.ttk.Progressbar(root, orient = tk.HORIZONTAL, length = 100, mode = 'determinate')
+        self.progress.place(x=10,y=0,width=230,height=10)
+
+
+
         if not os.path.isdir('./ItemsAdder'):
             os.mkdir('./ItemsAdder') 
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")
 
     def GButton_674_command(self):
-        
+        self.progress['value'] = 0
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
             return 0
@@ -73,6 +82,7 @@ class App:
                 # print(get_namespace)
             shutil.rmtree('./ItemsAdder/contents')
         # exit()
+        self.progress['value'] = 10
         if os.path.isdir('./Oraxen'):
             shutil.rmtree('./Oraxen')
         if not os.path.isdir('./Oraxen'):
@@ -115,7 +125,7 @@ class App:
                 shutil.copytree(itemadder+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
 
 
-        
+        self.progress['value'] = 30
         # item pack to oraxen
         itemadder = './ItemsAdder/data/items_packs'
         for get_namespace in os.listdir(itemadder):
@@ -191,6 +201,15 @@ class App:
                                         if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
                                             documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
                                             documents['items'][key]['Mechanics']['furniture'].pop('barriers')
+                                        # with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
+                                        #     da = json.load(file)
+
+
+                                        # edit json ia to ox
+                                        # resourepack = './ItemsAdder/data/resource_pack/assets/'+get_namespace+'/models/'+key+'.json'
+                                        # with open(resourepack) as file:
+                                        #     da = json.load(file)
+                                        # print(da['display']['head']['scale'])
 
                                 if 'model_id' in documents['items'][key]['Pack']:
                                     documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
@@ -342,6 +361,7 @@ class App:
 
                         print("Convet file "+get_file) 
                         self.GLabel_225["text"] = "Convet file "+get_file
+        self.progress['value'] = 100
         # mege file
         data  = ''
         for get_file in os.listdir(r'Oraxen\\items\\'):
