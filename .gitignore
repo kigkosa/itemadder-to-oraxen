@@ -6,3 +6,5 @@ run.spec
 /.vscode
 /.spec
 /.bat
+ia-to-ox-for-windows.spec
+build.bat
