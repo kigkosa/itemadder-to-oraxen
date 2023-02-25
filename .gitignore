@@ -4,3 +4,5 @@
 /dist
 run.spec
 /.vscode
+/.spec
+/.bat

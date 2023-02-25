@@ -175,7 +175,6 @@ class App:
                                                 documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
                                             documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
-                                            # documents['items'][key]['Mechanics']['furniture']['limited_placing']['block_types'] = ['AIR']
                                             
 
                                         if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
@@ -184,7 +183,6 @@ class App:
                                             furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
                                             documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
                                             documents['items'][key]['Mechanics']['furniture']['barrier'] = True
-                                        # documents['items'][key]['Mechanics']['furniture']['facing'] = 'UP'
                                         documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
                                         documents['items'][key]['material'] = "PAPER"
 
@@ -208,24 +206,19 @@ class App:
                                             documents['items'][key].pop('behaviours')
                                             documents['items'][key]['Mechanics'] = {}
                                             documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
-                                    # documents['items'][key].pop('hat')
                                 if  'material' in documents['items'][key]:
                                     if 'SHIELD' in documents['items'][key]['material']:
-                                        # documents['items'][key].pop('material')
                                         documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
                                     elif 'CROSSBOW' in documents['items'][key]['material']:
-                                        # documents['items'][key].pop('material')
                                         gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
 
                                         documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
                                         documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
                                     elif 'BOW' in documents['items'][key]['material']:
-                                        # documents['items'][key].pop('material')
                                         gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
                                         
 
 
-                                        # documents['items'][key]['Pack']['charged_model'] = gnd+'_pulling_2'
                                         documents['items'][key]['Pack']['pulling_models'] = [
                                             gnd+'_0',
                                                 gnd+'_1',
@@ -250,7 +243,6 @@ class App:
                                         namespace_split = get_namespace.split("_")[0]
                                         list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
 
-                                        # print(list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']])
                                         os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
                                         documents['items'][key]['Pack']['parent_model']= "item/generated"
                                         a_text = get_namespace+"/"+f"armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png"
@@ -269,7 +261,6 @@ class App:
                                         for na in documents['armors_rendering']:
                                             hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                             colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                            # tn = documents['armors_rendering'][na]['layer_1'].split("/")
                                             if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
                                                 os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png")
                                             if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png"):
@@ -291,7 +282,7 @@ class App:
                                             shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
                                 else:
                                    
-                                    
+                                    # gen 2d item
                                     if 'model_id' in documents['items'][key]['Pack']:
                                         documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                                     documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
@@ -330,6 +321,7 @@ class App:
                                         documents['items'][key]['Pack']["parent_model"] = "item/handheld_rod"
                                         with open(f"Oraxen/pack/models/{gnd}_cast.json", "w") as f:
                                             f.write('{"parent":"minecraft:item/fishing_rod","textures":{"layer0":"'+gnd+'_cast"}}')
+                                            
                                         
                         for key in list(documents['items']):
                             if 'specific_properties' in documents['items'][key]:
@@ -402,7 +394,6 @@ def hitbox(length,width,height):
     return da
 if __name__ == "__main__":
     
-        # os.mkdir('./ItemsAdder/data')            
     root = tk.Tk()
     app = App(root)
     root.mainloop()

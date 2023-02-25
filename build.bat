@@ -1,1 +1,0 @@
-pyinstaller.exe --icon=icon.png -F --onefile --noconsole -n "ia-to-ox-for-windows" gui.py
