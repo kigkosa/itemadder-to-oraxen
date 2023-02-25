@@ -299,11 +299,19 @@ class App:
                                         documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
                                     if 'SHIELD' in documents['items'][key]['material']:
                                         documents['items'][key]['Pack']['blocking_model'] = documents['items'][key]['Pack']['textures'][0]+'_blocking'
+                                        documents['items'][key]['Pack']['parent_model'] = "item/shield"
+                                        with open(f"Oraxen/pack/models/{documents['items'][key]['Pack']['blocking_model']}.json", "w") as f:
+                                            f.write('{"parent":"builtin/entity","gui_light":"front","textures":{"particle":"'+documents['items'][key]['Pack']['blocking_model']+'"},"display":{"thirdperson_righthand":{"rotation":[45,135,0],"translation":[3.51,11,-2],"scale":[1,1,1]},"thirdperson_lefthand":{"rotation":[45,135,0],"translation":[13.51,3,5],"scale":[1,1,1]},"firstperson_righthand":{"rotation":[0,180,-5],"translation":[-15,5,-11],"scale":[1.25,1.25,1.25]},"firstperson_lefthand":{"rotation":[0,180,-5],"translation":[5,5,-11],"scale":[1.25,1.25,1.25]},"gui":{"rotation":[15,-25,-5],"translation":[2,3,0],"scale":[0.65,0.65,0.65]}}}')
                                     elif 'CROSSBOW' in documents['items'][key]['material']:
                                         gnd = documents['items'][key]['Pack']['textures'][0]
-
                                         documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
-                                        documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
+                                        documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']       
+
+                                        documents['items'][key]['Pack']["parent_model"] = "item/crossbow"
+                                        for tr in documents['items'][key]['Pack']['pulling_models']:
+                                            with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
+                                                f.write('{"parent":"minecraft:item/crossbow","textures":{"layer0":"'+tr+'"}}')
+
                                     elif 'BOW' in documents['items'][key]['material']:
                                         gnd = documents['items'][key]['Pack']['textures'][0]
                                         documents['items'][key]['Pack']["parent_model"] = "item/bow"
@@ -318,8 +326,11 @@ class App:
 
                                     elif 'FISHING_ROD' in documents['items'][key]['material']:
                                         gnd = documents['items'][key]['Pack']['textures'][0]
-
                                         documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
+                                        documents['items'][key]['Pack']["parent_model"] = "item/handheld_rod"
+                                        with open(f"Oraxen/pack/models/{gnd}_cast.json", "w") as f:
+                                            f.write('{"parent":"minecraft:item/fishing_rod","textures":{"layer0":"'+gnd+'_cast"}}')
+                                        
                         for key in list(documents['items']):
                             if 'specific_properties' in documents['items'][key]:
                                 if 'armor' in documents['items'][key]['specific_properties']:
