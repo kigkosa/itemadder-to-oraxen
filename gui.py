@@ -205,11 +205,28 @@ class App:
                                         #     da = json.load(file)
 
 
-                                        # edit json ia to ox
+                                        # edit json ia to ox ยังไม่เสร็จปิดไว้ก่อน
                                         # resourepack = './ItemsAdder/data/resource_pack/assets/'+get_namespace+'/models/'+key+'.json'
                                         # with open(resourepack) as file:
                                         #     da = json.load(file)
-                                        # print(da['display']['head']['scale'])
+                                        #     da['display']['fixed']['scale'] = da['display']['head']['scale'] 
+                                        #     da['display']['fixed']['rotation'] = [-90,0,0]
+                                        #     ts = da['display']['head']['translation'][0]
+                                        #     if da['display']['head']['translation'][1] < 0:
+                                        #         # print((da['display']['head']['translation'][1] /2))
+                                        #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
+                                        #         da['display']['fixed']['translation'][1] = ts +2
+                                        #         # print((da['display']['head']['translation'][1]/2)+2)
+                                        #         da['display']['fixed']['translation'][2] = float((da['display']['head']['translation'][1]/2)+2)
+                                        #     else:
+                                        #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
+                                        #         da['display']['fixed']['translation'][1] = ts +2
+                                        #         da['display']['fixed']['translation'][2] = (ts - (ts*2))/2
+                                        #     # print(da['display']['fixed']['scale'])
+                                        #     # save
+                                        #     with open(resourepack, 'w') as file:
+                                        #         json.dump(da, file, indent=4)
+                                       
 
                                 if 'model_id' in documents['items'][key]['Pack']:
                                     documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
