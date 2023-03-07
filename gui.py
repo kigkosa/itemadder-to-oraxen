@@ -8,6 +8,7 @@ import os
 import yaml
 import glob
 import requests
+from PIL import Image
 
 class App:
     def __init__(self, root):
@@ -126,6 +127,9 @@ class App:
 
 
         self.progress['value'] = 30
+
+
+
         # item pack to oraxen
         itemadder = './ItemsAdder/data/items_packs'
         for get_namespace in os.listdir(itemadder):
@@ -294,6 +298,7 @@ class App:
                                         new_file = ''
                                         # replace name armor
                                         colors = [] 
+                                        texture_size = 16
                                         for na in documents['armors_rendering']:
                                             hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                             colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
@@ -309,13 +314,28 @@ class App:
                                                     os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png")
 
                                         documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
-                                    
+                                        
+                                        
+                                        if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
+                                            mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32, "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
+                                            im = Image.open(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png") 
+                                            texture_size = mode_to_bpp[im.mode]
                                         
 
-        
-                                        # set armor 128x32 config
+                                       
+                                        # "Oraxen/settings.yml" red file yml
                                         if not os.path.exists(f"Oraxen/settings.yml"):
-                                            shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
+                                            with open("Oraxen_settings.yml",'r') as f:
+                                                data = yaml.load(f, Loader=yaml.FullLoader)
+                                                data['Pack']['generation']['armor_resolution'] = texture_size
+                                            with open(f"Oraxen/settings.yml",'w') as f:
+                                                yaml.dump(data, f)
+
+
+                                       
+                                        
+                                        # if not os.path.exists(f"Oraxen/settings.yml"):
+                                        #     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
                                 else:
                                    
                                     # gen 2d item
