@@ -141,7 +141,7 @@ class App:
                     if  'items' in documents:
                         for key in list(documents['items']):
                             documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
-                            documents['items'][key]['displayname'] = color_to_hex(documents['items'][key].pop('display_name').title() )
+                            documents['items'][key]['displayname'] = "\"<White>"+color_to_hex(documents['items'][key].pop('display_name').title() )+"\""
                             documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
                             if 'suggest_in_command' in documents['items'][key] :
                                 documents['items'][key].pop('suggest_in_command')
@@ -294,9 +294,7 @@ class App:
                                         documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
                                         
                                         nv = a_text.split("/")[2].split("_")[0]                                
-
-                                        old_file = ''
-                                        new_file = ''
+    
                                         # replace name armor
                                         colors = [] 
                                         texture_size = 16
