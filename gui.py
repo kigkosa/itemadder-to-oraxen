@@ -67,22 +67,22 @@ class App:
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
             return 0
-        if os.path.isdir('./ItemsAdder/contents'):
-            if os.path.isdir('./ItemsAdder/data'):
-                shutil.rmtree('./ItemsAdder/data')
-                os.mkdir('./ItemsAdder/data') 
-                os.mkdir('./ItemsAdder/data/items_packs')
+        # if os.path.isdir('./ItemsAdder/contents'):
+        #     if os.path.isdir('./ItemsAdder/data'):
+        #         shutil.rmtree('./ItemsAdder/data')
+        #         os.mkdir('./ItemsAdder/data') 
+        #         os.mkdir('./ItemsAdder/data/items_packs')
 
                 
-            for get_namespace in os.listdir('./ItemsAdder/contents'):
-                shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
-                if os.path.isdir('./ItemsAdder/contents/'+get_namespace+'/resourcepack/assets'):
-                    shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
-                else:
-                    shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack/assets')
+        #     for get_namespace in os.listdir('./ItemsAdder/contents'):
+        #         shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
+        #         if os.path.isdir('./ItemsAdder/contents/'+get_namespace+'/resourcepack/assets'):
+        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
+        #         else:
+        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack/assets')
 
-                # print(get_namespace)
-            shutil.rmtree('./ItemsAdder/contents')
+        #         # print(get_namespace)
+        #     shutil.rmtree('./ItemsAdder/contents')
         # exit()
         self.progress['value'] = 10
         if os.path.isdir('./Oraxen'):
@@ -94,319 +94,327 @@ class App:
             os.mkdir('./Oraxen/pack/models') 
             os.mkdir('./Oraxen/pack/textures')
 
-        itemadder = './ItemsAdder/data/resource_pack/assets'
-        for get_namespace in os.listdir(itemadder):
+        itemadder = './ItemsAdder/contents'
 
-            if not os.path.isdir('./Oraxen/pack/models/'+get_namespace):
-                os.mkdir('./Oraxen/pack/models/'+get_namespace)
-                os.mkdir('./Oraxen/pack/textures/'+get_namespace)
-            #get all sound
-            if os.path.isdir(itemadder+"/"+get_namespace+"/sounds"):
-                os.mkdir('./Oraxen/pack/assets')
-                os.mkdir('./Oraxen/pack/assets/'+get_namespace)
-                shutil.copytree(itemadder+"/"+get_namespace+"/sounds","./Oraxen/pack/assets/"+get_namespace+"/sounds")
-                shutil.copy(itemadder+"/"+get_namespace+"/sounds.json","./Oraxen/pack/assets/"+get_namespace)
+        for get_conntent in os.listdir(itemadder):
+            # print(get_conntent)
 
+            for get_namespace in os.listdir(itemadder+"/"):
+
+                
+
+                return 0
+
+                if not os.path.isdir('./Oraxen/pack/models/'+get_namespace):
+                    os.mkdir('./Oraxen/pack/models/'+get_namespace)
+                    os.mkdir('./Oraxen/pack/textures/'+get_namespace)
+                #get all sound
+                if os.path.isdir(itemadder+"/"+get_namespace+"/sounds"):
+                    os.mkdir('./Oraxen/pack/assets')
+                    os.mkdir('./Oraxen/pack/assets/'+get_namespace)
+                    shutil.copytree(itemadder+"/"+get_namespace+"/sounds","./Oraxen/pack/assets/"+get_namespace+"/sounds")
+                    shutil.copy(itemadder+"/"+get_namespace+"/sounds.json","./Oraxen/pack/assets/"+get_namespace)
+
+                        
+                # get all model json replace
+                for file in glob.glob(itemadder+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
+                    get_models = file.replace('\\','/')
+                    replace_text_json(get_models,get_namespace,get_models)
+
+
+                # get all model json coppy
+                if os.path.isdir("./Oraxen/pack/models/"+get_namespace):
+                    shutil.rmtree("./Oraxen/pack/models/"+get_namespace)
+                if os.path.isdir(itemadder+"/"+get_namespace+"/models"):
+                    shutil.copytree(itemadder+"/"+get_namespace+"/models","./Oraxen/pack/models/"+get_namespace)
+
+                # coppy textures
+                if os.path.isdir("./Oraxen/pack/textures/"+get_namespace):
+                    shutil.rmtree("./Oraxen/pack/textures/"+get_namespace)
+                if os.path.isdir(itemadder+"/"+get_namespace+"/textures"):
+                    shutil.copytree(itemadder+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
+
+
+            self.progress['value'] = 30
+
+
+
+            # item pack to oraxen
+            itemadder = './ItemsAdder/data/items_packs'
+            for get_namespace in os.listdir(itemadder):
+                for get_file in os.listdir(itemadder+"/"+get_namespace):
                     
-            # get all model json replace
-            for file in glob.glob(itemadder+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
-                get_models = file.replace('\\','/')
-                replace_text_json(get_models,get_namespace,get_models)
+                    with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
+                        documents = yaml.full_load(file)
+                        if  'items' in documents:
+                            for key in list(documents['items']):
+                                documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
+                                documents['items'][key]['displayname'] = "\"<White>"+color_to_hex(documents['items'][key].pop('display_name').title() )+"\""
+                                documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
+                                if 'suggest_in_command' in documents['items'][key] :
+                                    documents['items'][key].pop('suggest_in_command')
+                    
+                            for key in list(documents['items']):
+                                
+                    
+                                if 'lore' in documents['items'][key]:
+                                    lore = documents['items'][key].pop('lore')
+                                    l = []
+                                    for v in lore:
+                                        l.append(color_to_hex(v))
+                                    documents['items'][key]['lore'] = l
+                                if documents['items'][key]['Pack']['generate_model'] == False:
+                                    documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
 
+                                    if 'behaviours' in documents['items'][key]:
+                                        if 'furniture' in documents['items'][key]['behaviours']:
+                                            if 'entity' in documents['items'][key]['behaviours']['furniture']:
+                                                documents['items'][key]['behaviours']['furniture'].pop('entity')
 
-            # get all model json coppy
-            if os.path.isdir("./Oraxen/pack/models/"+get_namespace):
-                shutil.rmtree("./Oraxen/pack/models/"+get_namespace)
-            if os.path.isdir(itemadder+"/"+get_namespace+"/models"):
-                shutil.copytree(itemadder+"/"+get_namespace+"/models","./Oraxen/pack/models/"+get_namespace)
-
-            # coppy textures
-            if os.path.isdir("./Oraxen/pack/textures/"+get_namespace):
-                shutil.rmtree("./Oraxen/pack/textures/"+get_namespace)
-            if os.path.isdir(itemadder+"/"+get_namespace+"/textures"):
-                shutil.copytree(itemadder+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
-
-
-        self.progress['value'] = 30
-
-
-
-        # item pack to oraxen
-        itemadder = './ItemsAdder/data/items_packs'
-        for get_namespace in os.listdir(itemadder):
-            for get_file in os.listdir(itemadder+"/"+get_namespace):
-                
-                with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
-                    documents = yaml.full_load(file)
-                    if  'items' in documents:
-                        for key in list(documents['items']):
-                            documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
-                            documents['items'][key]['displayname'] = "\"<White>"+color_to_hex(documents['items'][key].pop('display_name').title() )+"\""
-                            documents['items'][key]['Pack']['generate_model'] = documents['items'][key]['Pack'].pop('generate')
-                            if 'suggest_in_command' in documents['items'][key] :
-                                documents['items'][key].pop('suggest_in_command')
-                
-                        for key in list(documents['items']):
-                            
-                
-                            if 'lore' in documents['items'][key]:
-                                lore = documents['items'][key].pop('lore')
-                                l = []
-                                for v in lore:
-                                    l.append(color_to_hex(v))
-                                documents['items'][key]['lore'] = l
-                            if documents['items'][key]['Pack']['generate_model'] == False:
-                                documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
-
-                                if 'behaviours' in documents['items'][key]:
-                                    if 'furniture' in documents['items'][key]['behaviours']:
-                                        if 'entity' in documents['items'][key]['behaviours']['furniture']:
-                                            documents['items'][key]['behaviours']['furniture'].pop('entity')
-
-                                        documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
-                                        if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
-                                            if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
-                                                documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
-                                                documents['items'][key]['Mechanics']['furniture'].pop('solid')
-                                            elif documents['items'][key]['Mechanics']['furniture']['solid'] == False:
-                                                documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
-                                                documents['items'][key]['Mechanics']['furniture'].pop('solid')                                        
+                                            documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
+                                            if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
+                                                if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
+                                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
+                                                    documents['items'][key]['Mechanics']['furniture'].pop('solid')
+                                                elif documents['items'][key]['Mechanics']['furniture']['solid'] == False:
+                                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = documents['items'][key]['Mechanics']['furniture']['solid']
+                                                    documents['items'][key]['Mechanics']['furniture'].pop('solid')                                        
+                                                else:
+                                                    documents['items'][key]['Mechanics']['furniture']['barrier'] = False
                                             else:
                                                 documents['items'][key]['Mechanics']['furniture']['barrier'] = False
-                                        else:
-                                            documents['items'][key]['Mechanics']['furniture']['barrier'] = False
-                                        if 'hitbox' in documents['items'][key]['Mechanics']['furniture'] :
-                                            hbt = documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
-                                            documents['items'][key]['Mechanics']['furniture']['barriers'] = hitbox(hbt['length'],hbt['width'],hbt['height'])
+                                            if 'hitbox' in documents['items'][key]['Mechanics']['furniture'] :
+                                                hbt = documents['items'][key]['Mechanics']['furniture'].pop('hitbox')
+                                                documents['items'][key]['Mechanics']['furniture']['barriers'] = hitbox(hbt['length'],hbt['width'],hbt['height'])
 
-                                        if 'placeable_on' in documents['items'][key]['Mechanics']['furniture'] :
-                                            pn = documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
-                                            documents['items'][key]['Mechanics']['furniture']['limited_placing'] = {}
-                                            if 'walls' in pn:
-                                                documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] = pn['walls']
-                                            if 'floor' in pn:
-                                                documents['items'][key]['Mechanics']['furniture']['limited_placing']['floor'] = pn['floor'] 
-                                            if 'ceiling' in pn:
-                                                documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
+                                            if 'placeable_on' in documents['items'][key]['Mechanics']['furniture'] :
+                                                pn = documents['items'][key]['Mechanics']['furniture'].pop('placeable_on')
+                                                documents['items'][key]['Mechanics']['furniture']['limited_placing'] = {}
+                                                if 'walls' in pn:
+                                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] = pn['walls']
+                                                if 'floor' in pn:
+                                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['floor'] = pn['floor'] 
+                                                if 'ceiling' in pn:
+                                                    documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
-                                            documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
-                                            
+                                                documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
+                                                
 
-                                        if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
-                                            documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
-                                        if 'furniture_sit' in documents['items'][key]['Mechanics']:
-                                            furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
-                                            documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
-                                            documents['items'][key]['Mechanics']['furniture']['barrier'] = True
-                                        documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
-                                        documents['items'][key]['material'] = "PAPER"
+                                            if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
+                                                documents['items'][key]['Mechanics']['furniture'].pop('fixed_rotation')
+                                            if 'furniture_sit' in documents['items'][key]['Mechanics']:
+                                                furniture_sit = documents['items'][key]['Mechanics'].pop('furniture_sit')
+                                                documents['items'][key]['Mechanics']['furniture']['seat'] = {'height':round(furniture_sit['sit_height']-1,1)}
+                                                documents['items'][key]['Mechanics']['furniture']['barrier'] = True
+                                            documents['items'][key]['Mechanics']['furniture']['rotation'] = 90
+                                            documents['items'][key]['material'] = "PAPER"
 
 
-                                        # ROTATION to none
-                                        if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
-                                            documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
-                                            documents['items'][key]['Mechanics']['furniture'].pop('barriers')
-                                        # with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
-                                        #     da = json.load(file)
+                                            # ROTATION to none
+                                            if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
+                                                documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
+                                                documents['items'][key]['Mechanics']['furniture'].pop('barriers')
+                                            # with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
+                                            #     da = json.load(file)
 
 
-                                        # edit json ia to ox ยังไม่เสร็จปิดไว้ก่อน
-                                        # resourepack = './ItemsAdder/data/resource_pack/assets/'+get_namespace+'/models/'+key+'.json'
-                                        # with open(resourepack) as file:
-                                        #     da = json.load(file)
-                                        #     da['display']['fixed']['scale'] = da['display']['head']['scale'] 
-                                        #     da['display']['fixed']['rotation'] = [-90,0,0]
-                                        #     ts = da['display']['head']['translation'][0]
-                                        #     if da['display']['head']['translation'][1] < 0:
-                                        #         # print((da['display']['head']['translation'][1] /2))
-                                        #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
-                                        #         da['display']['fixed']['translation'][1] = ts +2
-                                        #         # print((da['display']['head']['translation'][1]/2)+2)
-                                        #         da['display']['fixed']['translation'][2] = float((da['display']['head']['translation'][1]/2)+2)
-                                        #     else:
-                                        #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
-                                        #         da['display']['fixed']['translation'][1] = ts +2
-                                        #         da['display']['fixed']['translation'][2] = (ts - (ts*2))/2
-                                        #     # print(da['display']['fixed']['scale'])
-                                        #     # save
-                                        #     with open(resourepack, 'w') as file:
-                                        #         json.dump(da, file, indent=4)
-                                       
-
-                                if 'model_id' in documents['items'][key]['Pack']:
-                                    documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
-                                if 'model_path' in documents['items'][key]['Pack']:
-                                    documents['items'][key]['Pack']['model'] = documents['items'][key]['Pack'].pop('model_path')
-                                if 'hat' in documents['items'][key]:
-                                    documents['items'][key]['Mechanics'] = {}
-                                    documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
-                                if 'behaviours' in documents['items'][key]:
-                                    if 'hat' in documents['items'][key]['behaviours']:
-                                        if documents['items'][key]['behaviours']['hat'] == True:
-                                            documents['items'][key]['behaviours'].pop('hat')
-                                            documents['items'][key].pop('behaviours')
-                                            documents['items'][key]['Mechanics'] = {}
-                                            documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
-                                if  'material' in documents['items'][key]:
-                                    if 'SHIELD' in documents['items'][key]['material']:
-                                        documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
-                                    elif 'CROSSBOW' in documents['items'][key]['material']:
-                                        gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
-
-                                        documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
-                                        documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
-                                    elif 'BOW' in documents['items'][key]['material']:
-                                        gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+                                            # edit json ia to ox ยังไม่เสร็จปิดไว้ก่อน
+                                            # resourepack = './ItemsAdder/data/resource_pack/assets/'+get_namespace+'/models/'+key+'.json'
+                                            # with open(resourepack) as file:
+                                            #     da = json.load(file)
+                                            #     da['display']['fixed']['scale'] = da['display']['head']['scale'] 
+                                            #     da['display']['fixed']['rotation'] = [-90,0,0]
+                                            #     ts = da['display']['head']['translation'][0]
+                                            #     if da['display']['head']['translation'][1] < 0:
+                                            #         # print((da['display']['head']['translation'][1] /2))
+                                            #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
+                                            #         da['display']['fixed']['translation'][1] = ts +2
+                                            #         # print((da['display']['head']['translation'][1]/2)+2)
+                                            #         da['display']['fixed']['translation'][2] = float((da['display']['head']['translation'][1]/2)+2)
+                                            #     else:
+                                            #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
+                                            #         da['display']['fixed']['translation'][1] = ts +2
+                                            #         da['display']['fixed']['translation'][2] = (ts - (ts*2))/2
+                                            #     # print(da['display']['fixed']['scale'])
+                                            #     # save
+                                            #     with open(resourepack, 'w') as file:
+                                            #         json.dump(da, file, indent=4)
                                         
 
-
-                                        documents['items'][key]['Pack']['pulling_models'] = [
-                                            gnd+'_0',
-                                                gnd+'_1',
-                                                gnd+'_2'
-                                        ]
-                                        
-
-                                    elif 'FISHING_ROD' in documents['items'][key]['material']:
-                                        gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
-
-                                        documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
-
-
-
-                                documents['items'][key]['Pack']['model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']
-                                
-                            else:
-                                if 'specific_properties' in documents['items'][key]:
-
-                                    
-                                    if 'armor' in documents['items'][key]['specific_properties']:
-                                        namespace_split = get_namespace.split("_")[0]
-                                        list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
-
-                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
-                                        documents['items'][key]['Pack']['parent_model']= "item/generated"
-                                        a_text = get_namespace+"/"+f"armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png"
-                                    
-                                        documents['items'][key]['Pack']['textures'] = [a_text,a_text]
-
-                                        
-                                        documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
-                                        
-                                        nv = a_text.split("/")[2].split("_")[0]                                
-    
-                                        # replace name armor
-                                        colors = [] 
-                                        texture_size = 16
-                                        for na in documents['armors_rendering']:
-                                            hex = documents['armors_rendering'][na]['color'].lstrip('#')
-                                            colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                            if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
-                                                os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png")
-                                            if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png"):
-                                                os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png")
-                                            if 'emissive_1' in documents['armors_rendering'][na]:
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png")
-                                            if 'emissive_2' in documents['armors_rendering'][na]:
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png")
-
-                                        documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
-                                        
-                                        
-                                        if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
-                                            mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32, "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
-                                            im = Image.open(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png") 
-                                            texture_size = mode_to_bpp[im.mode]
-                                        
-
-                                       
-                                        # "Oraxen/settings.yml" red file yml
-                                        if not os.path.exists(f"Oraxen/settings.yml"):
-                                            with open("Oraxen_settings.yml",'r') as f:
-                                                data = yaml.load(f, Loader=yaml.FullLoader)
-                                                data['Pack']['generation']['armor_resolution'] = texture_size
-                                            with open(f"Oraxen/settings.yml",'w') as f:
-                                                yaml.dump(data, f)
-
-
-                                       
-                                        
-                                        # if not os.path.exists(f"Oraxen/settings.yml"):
-                                        #     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
-                                else:
-                                   
-                                    # gen 2d item
                                     if 'model_id' in documents['items'][key]['Pack']:
                                         documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
-                                    documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
-                                    for tr in range(len(documents['items'][key]['Pack']['textures'])):
-                                        documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
-                                    if 'SHIELD' in documents['items'][key]['material']:
-                                        documents['items'][key]['Pack']['blocking_model'] = documents['items'][key]['Pack']['textures'][0]+'_blocking'
-                                        documents['items'][key]['Pack']['parent_model'] = "item/shield"
-                                        with open(f"Oraxen/pack/models/{documents['items'][key]['Pack']['blocking_model']}.json", "w") as f:
-                                            f.write('{"parent":"builtin/entity","gui_light":"front","textures":{"particle":"'+documents['items'][key]['Pack']['blocking_model']+'"},"display":{"thirdperson_righthand":{"rotation":[45,135,0],"translation":[3.51,11,-2],"scale":[1,1,1]},"thirdperson_lefthand":{"rotation":[45,135,0],"translation":[13.51,3,5],"scale":[1,1,1]},"firstperson_righthand":{"rotation":[0,180,-5],"translation":[-15,5,-11],"scale":[1.25,1.25,1.25]},"firstperson_lefthand":{"rotation":[0,180,-5],"translation":[5,5,-11],"scale":[1.25,1.25,1.25]},"gui":{"rotation":[15,-25,-5],"translation":[2,3,0],"scale":[0.65,0.65,0.65]}}}')
-                                    elif 'CROSSBOW' in documents['items'][key]['material']:
-                                        gnd = documents['items'][key]['Pack']['textures'][0]
-                                        documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
-                                        documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']       
+                                    if 'model_path' in documents['items'][key]['Pack']:
+                                        documents['items'][key]['Pack']['model'] = documents['items'][key]['Pack'].pop('model_path')
+                                    if 'hat' in documents['items'][key]:
+                                        documents['items'][key]['Mechanics'] = {}
+                                        documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
+                                    if 'behaviours' in documents['items'][key]:
+                                        if 'hat' in documents['items'][key]['behaviours']:
+                                            if documents['items'][key]['behaviours']['hat'] == True:
+                                                documents['items'][key]['behaviours'].pop('hat')
+                                                documents['items'][key].pop('behaviours')
+                                                documents['items'][key]['Mechanics'] = {}
+                                                documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
+                                    if  'material' in documents['items'][key]:
+                                        if 'SHIELD' in documents['items'][key]['material']:
+                                            documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
+                                        elif 'CROSSBOW' in documents['items'][key]['material']:
+                                            gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
 
-                                        documents['items'][key]['Pack']["parent_model"] = "item/crossbow"
-                                        for tr in documents['items'][key]['Pack']['pulling_models']:
-                                            with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
-                                                f.write('{"parent":"minecraft:item/crossbow","textures":{"layer0":"'+tr+'"}}')
-
-                                    elif 'BOW' in documents['items'][key]['material']:
-                                        gnd = documents['items'][key]['Pack']['textures'][0]
-                                        documents['items'][key]['Pack']["parent_model"] = "item/bow"
-                                        documents['items'][key]['Pack']['pulling_models'] = [
-                                            gnd+'_0',
-                                                gnd+'_1',
-                                                gnd+'_2'
-                                        ]
-                                        for tr in documents['items'][key]['Pack']['pulling_models']:
-                                            with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
-                                                f.write('{"parent":"minecraft:item/bow","textures":{"layer0":"'+tr+'"}}')
-
-                                    elif 'FISHING_ROD' in documents['items'][key]['material']:
-                                        gnd = documents['items'][key]['Pack']['textures'][0]
-                                        documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
-                                        documents['items'][key]['Pack']["parent_model"] = "item/handheld_rod"
-                                        with open(f"Oraxen/pack/models/{gnd}_cast.json", "w") as f:
-                                            f.write('{"parent":"minecraft:item/fishing_rod","textures":{"layer0":"'+gnd+'_cast"}}')
+                                            documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
+                                            documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
+                                        elif 'BOW' in documents['items'][key]['material']:
+                                            gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
                                             
-                                        
-                        for key in list(documents['items']):
-                            if 'specific_properties' in documents['items'][key]:
-                                if 'armor' in documents['items'][key]['specific_properties']:
-                                        vv = documents['items'].pop(key)
-                                        nv = a_text.split("/")[2].split("_")[0]
-                                        nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
-                                        documents['items'][nk] = vv
-                                        documents['items'][nk].pop('specific_properties')
-                                    
-                        with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
-                            documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
-                        with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'r') as file :
-                            filedata = file.read()
-                        filedata = filedata.replace("'", '')
-                        with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
-                            file.write(filedata)
 
-                        print("Convet file "+get_file) 
-                        self.GLabel_225["text"] = "Convet file "+get_file
-        self.progress['value'] = 100
-        # mege file
-        data  = ''
-        for get_file in os.listdir(r'Oraxen\\items\\'):
-                with open(r'Oraxen\\items\\'+get_file, 'r') as file :
-                    data += file.read()
-                os.remove(r'Oraxen\\items\\'+get_file)
-        with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
-            file.write(data)   
-        messagebox.showinfo("Info", "convert success")           
+
+                                            documents['items'][key]['Pack']['pulling_models'] = [
+                                                gnd+'_0',
+                                                    gnd+'_1',
+                                                    gnd+'_2'
+                                            ]
+                                            
+
+                                        elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                            gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+
+                                            documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
+
+
+
+                                    documents['items'][key]['Pack']['model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']
+                                    
+                                else:
+                                    if 'specific_properties' in documents['items'][key]:
+
+                                        
+                                        if 'armor' in documents['items'][key]['specific_properties']:
+                                            namespace_split = get_namespace.split("_")[0]
+                                            list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
+
+                                            os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
+                                            documents['items'][key]['Pack']['parent_model']= "item/generated"
+                                            a_text = get_namespace+"/"+f"armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png"
+                                        
+                                            documents['items'][key]['Pack']['textures'] = [a_text,a_text]
+
+                                            
+                                            documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
+                                            
+                                            nv = a_text.split("/")[2].split("_")[0]                                
+        
+                                            # replace name armor
+                                            colors = [] 
+                                            texture_size = 16
+                                            for na in documents['armors_rendering']:
+                                                hex = documents['armors_rendering'][na]['color'].lstrip('#')
+                                                colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
+                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png")
+                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png"):
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png")
+                                                if 'emissive_1' in documents['armors_rendering'][na]:
+                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png"):
+                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png")
+                                                if 'emissive_2' in documents['armors_rendering'][na]:
+                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png"):
+                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png")
+
+                                            documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
+                                            
+                                            
+                                            if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
+                                                mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32, "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
+                                                im = Image.open(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png") 
+                                                texture_size = mode_to_bpp[im.mode]
+                                            
+
+                                        
+                                            # "Oraxen/settings.yml" red file yml
+                                            if not os.path.exists(f"Oraxen/settings.yml"):
+                                                with open("Oraxen_settings.yml",'r') as f:
+                                                    data = yaml.load(f, Loader=yaml.FullLoader)
+                                                    data['Pack']['generation']['armor_resolution'] = texture_size
+                                                with open(f"Oraxen/settings.yml",'w') as f:
+                                                    yaml.dump(data, f)
+
+
+                                        
+                                            
+                                            # if not os.path.exists(f"Oraxen/settings.yml"):
+                                            #     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
+                                    else:
+                                    
+                                        # gen 2d item
+                                        if 'model_id' in documents['items'][key]['Pack']:
+                                            documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
+                                        documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
+                                        for tr in range(len(documents['items'][key]['Pack']['textures'])):
+                                            documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
+                                        if 'SHIELD' in documents['items'][key]['material']:
+                                            documents['items'][key]['Pack']['blocking_model'] = documents['items'][key]['Pack']['textures'][0]+'_blocking'
+                                            documents['items'][key]['Pack']['parent_model'] = "item/shield"
+                                            with open(f"Oraxen/pack/models/{documents['items'][key]['Pack']['blocking_model']}.json", "w") as f:
+                                                f.write('{"parent":"builtin/entity","gui_light":"front","textures":{"particle":"'+documents['items'][key]['Pack']['blocking_model']+'"},"display":{"thirdperson_righthand":{"rotation":[45,135,0],"translation":[3.51,11,-2],"scale":[1,1,1]},"thirdperson_lefthand":{"rotation":[45,135,0],"translation":[13.51,3,5],"scale":[1,1,1]},"firstperson_righthand":{"rotation":[0,180,-5],"translation":[-15,5,-11],"scale":[1.25,1.25,1.25]},"firstperson_lefthand":{"rotation":[0,180,-5],"translation":[5,5,-11],"scale":[1.25,1.25,1.25]},"gui":{"rotation":[15,-25,-5],"translation":[2,3,0],"scale":[0.65,0.65,0.65]}}}')
+                                        elif 'CROSSBOW' in documents['items'][key]['material']:
+                                            gnd = documents['items'][key]['Pack']['textures'][0]
+                                            documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
+                                            documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']       
+
+                                            documents['items'][key]['Pack']["parent_model"] = "item/crossbow"
+                                            for tr in documents['items'][key]['Pack']['pulling_models']:
+                                                with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
+                                                    f.write('{"parent":"minecraft:item/crossbow","textures":{"layer0":"'+tr+'"}}')
+
+                                        elif 'BOW' in documents['items'][key]['material']:
+                                            gnd = documents['items'][key]['Pack']['textures'][0]
+                                            documents['items'][key]['Pack']["parent_model"] = "item/bow"
+                                            documents['items'][key]['Pack']['pulling_models'] = [
+                                                gnd+'_0',
+                                                    gnd+'_1',
+                                                    gnd+'_2'
+                                            ]
+                                            for tr in documents['items'][key]['Pack']['pulling_models']:
+                                                with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
+                                                    f.write('{"parent":"minecraft:item/bow","textures":{"layer0":"'+tr+'"}}')
+
+                                        elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                            gnd = documents['items'][key]['Pack']['textures'][0]
+                                            documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
+                                            documents['items'][key]['Pack']["parent_model"] = "item/handheld_rod"
+                                            with open(f"Oraxen/pack/models/{gnd}_cast.json", "w") as f:
+                                                f.write('{"parent":"minecraft:item/fishing_rod","textures":{"layer0":"'+gnd+'_cast"}}')
+                                                
+                                            
+                            for key in list(documents['items']):
+                                if 'specific_properties' in documents['items'][key]:
+                                    if 'armor' in documents['items'][key]['specific_properties']:
+                                            vv = documents['items'].pop(key)
+                                            nv = a_text.split("/")[2].split("_")[0]
+                                            nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
+                                            documents['items'][nk] = vv
+                                            documents['items'][nk].pop('specific_properties')
+                                        
+                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
+                                documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
+                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'r') as file :
+                                filedata = file.read()
+                            filedata = filedata.replace("'", '')
+                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
+                                file.write(filedata)
+
+                            print("Convet file "+get_file) 
+                            self.GLabel_225["text"] = "Convet file "+get_file
+            self.progress['value'] = 100
+            # mege file
+            data  = ''
+            for get_file in os.listdir(r'Oraxen\\items\\'):
+                    with open(r'Oraxen\\items\\'+get_file, 'r') as file :
+                        data += file.read()
+                    os.remove(r'Oraxen\\items\\'+get_file)
+            with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+                file.write(data)   
+            messagebox.showinfo("Info", "convert success")           
 class YmlDumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(YmlDumper, self).increase_indent(flow, False)
