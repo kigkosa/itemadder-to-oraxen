@@ -67,23 +67,6 @@ class App:
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
             return 0
-        # if os.path.isdir('./ItemsAdder/contents'):
-        #     if os.path.isdir('./ItemsAdder/data'):
-        #         shutil.rmtree('./ItemsAdder/data')
-        #         os.mkdir('./ItemsAdder/data') 
-        #         os.mkdir('./ItemsAdder/data/items_packs')
-
-                
-        #     for get_namespace in os.listdir('./ItemsAdder/contents'):
-        #         shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
-        #         if os.path.isdir('./ItemsAdder/contents/'+get_namespace+'/resourcepack/assets'):
-        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
-        #         else:
-        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack/assets')
-
-        #         # print(get_namespace)
-        #     shutil.rmtree('./ItemsAdder/contents')
-        # exit()
         self.progress['value'] = 10
         if os.path.isdir('./Oraxen'):
             shutil.rmtree('./Oraxen')
@@ -98,26 +81,24 @@ class App:
 
         for get_conntent in os.listdir(itemadder):
             # print(get_conntent)
-
-            for get_namespace in os.listdir(itemadder+"/"):
-
+            ia_resoure_part = itemadder+"/"+get_conntent+"/resourcepack/"
+            if os.path.exists(ia_resoure_part+"/assets"):
+                ia_resoure_part = ia_resoure_part+"/assets"
+            for get_namespace in os.listdir(ia_resoure_part):               
                 
-
-                return 0
-
                 if not os.path.isdir('./Oraxen/pack/models/'+get_namespace):
                     os.mkdir('./Oraxen/pack/models/'+get_namespace)
                     os.mkdir('./Oraxen/pack/textures/'+get_namespace)
                 #get all sound
-                if os.path.isdir(itemadder+"/"+get_namespace+"/sounds"):
+                if os.path.isdir(ia_resoure_part+"/"+get_namespace+"/sounds"):
                     os.mkdir('./Oraxen/pack/assets')
                     os.mkdir('./Oraxen/pack/assets/'+get_namespace)
-                    shutil.copytree(itemadder+"/"+get_namespace+"/sounds","./Oraxen/pack/assets/"+get_namespace+"/sounds")
-                    shutil.copy(itemadder+"/"+get_namespace+"/sounds.json","./Oraxen/pack/assets/"+get_namespace)
+                    shutil.copytree(ia_resoure_part+"/"+get_namespace+"/sounds","./Oraxen/pack/assets/"+get_namespace+"/sounds")
+                    shutil.copy(ia_resoure_part+"/"+get_namespace+"/sounds.json","./Oraxen/pack/assets/"+get_namespace)
 
                         
                 # get all model json replace
-                for file in glob.glob(itemadder+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
+                for file in glob.glob(ia_resoure_part+"/"+get_namespace+"/models/"+"**/*.json", recursive = True):
                     get_models = file.replace('\\','/')
                     replace_text_json(get_models,get_namespace,get_models)
 
@@ -125,27 +106,24 @@ class App:
                 # get all model json coppy
                 if os.path.isdir("./Oraxen/pack/models/"+get_namespace):
                     shutil.rmtree("./Oraxen/pack/models/"+get_namespace)
-                if os.path.isdir(itemadder+"/"+get_namespace+"/models"):
-                    shutil.copytree(itemadder+"/"+get_namespace+"/models","./Oraxen/pack/models/"+get_namespace)
+                if os.path.isdir(ia_resoure_part+"/"+get_namespace+"/models"):
+                    shutil.copytree(ia_resoure_part+"/"+get_namespace+"/models","./Oraxen/pack/models/"+get_namespace)
 
                 # coppy textures
                 if os.path.isdir("./Oraxen/pack/textures/"+get_namespace):
                     shutil.rmtree("./Oraxen/pack/textures/"+get_namespace)
-                if os.path.isdir(itemadder+"/"+get_namespace+"/textures"):
-                    shutil.copytree(itemadder+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
-
-
-            self.progress['value'] = 30
-
-
-
-            # item pack to oraxen
-            itemadder = './ItemsAdder/data/items_packs'
-            for get_namespace in os.listdir(itemadder):
-                for get_file in os.listdir(itemadder+"/"+get_namespace):
-                    
-                    with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
+                if os.path.isdir(ia_resoure_part+"/"+get_namespace+"/textures"):
+                    shutil.copytree(ia_resoure_part+"/"+get_namespace+"/textures","./Oraxen/pack/textures/"+get_namespace)
+                self.progress['value'] = 30
+            # check namespace config file
+            ia_config_name = itemadder+"/"+get_conntent+"/configs"
+            for get_config_name in os.listdir(ia_config_name):
+                if not get_config_name.endswith('.yml'):
+                    ia_config_name = ia_config_name+"/"+get_config_name
+            for get_config in os.listdir(ia_config_name):
+                with open(ia_config_name+"/"+get_config) as file:
                         documents = yaml.full_load(file)
+
                         if  'items' in documents:
                             for key in list(documents['items']):
                                 documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
@@ -214,32 +192,7 @@ class App:
                                             if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
                                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
                                                 documents['items'][key]['Mechanics']['furniture'].pop('barriers')
-                                            # with open(itemadder+"/"+get_namespace+"/"+get_file) as file:
-                                            #     da = json.load(file)
 
-
-                                            # edit json ia to ox ยังไม่เสร็จปิดไว้ก่อน
-                                            # resourepack = './ItemsAdder/data/resource_pack/assets/'+get_namespace+'/models/'+key+'.json'
-                                            # with open(resourepack) as file:
-                                            #     da = json.load(file)
-                                            #     da['display']['fixed']['scale'] = da['display']['head']['scale'] 
-                                            #     da['display']['fixed']['rotation'] = [-90,0,0]
-                                            #     ts = da['display']['head']['translation'][0]
-                                            #     if da['display']['head']['translation'][1] < 0:
-                                            #         # print((da['display']['head']['translation'][1] /2))
-                                            #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
-                                            #         da['display']['fixed']['translation'][1] = ts +2
-                                            #         # print((da['display']['head']['translation'][1]/2)+2)
-                                            #         da['display']['fixed']['translation'][2] = float((da['display']['head']['translation'][1]/2)+2)
-                                            #     else:
-                                            #         da['display']['fixed']['translation'][0] = (ts - (ts*2))+2
-                                            #         da['display']['fixed']['translation'][1] = ts +2
-                                            #         da['display']['fixed']['translation'][2] = (ts - (ts*2))/2
-                                            #     # print(da['display']['fixed']['scale'])
-                                            #     # save
-                                            #     with open(resourepack, 'w') as file:
-                                            #         json.dump(da, file, indent=4)
-                                        
 
                                     if 'model_id' in documents['items'][key]['Pack']:
                                         documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
@@ -291,15 +244,20 @@ class App:
                                         if 'armor' in documents['items'][key]['specific_properties']:
                                             namespace_split = get_namespace.split("_")[0]
                                             list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
+                                            # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
+                                            
+                            
 
-                                            os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
+                                            armor_part = os.path.dirname(documents['items'][key]['Pack']['textures'][0])
+                                            _s_key = documents['items'][key.lower()]['specific_properties']['armor']['slot'].lower()
+                                            os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_{list_type_arror[_s_key]}.png")
                                             documents['items'][key]['Pack']['parent_model']= "item/generated"
-                                            a_text = get_namespace+"/"+f"armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png"
+                                            a_text = get_namespace+"/"+f"{armor_part}/{namespace_split}_{list_type_arror[_s_key]}.png"
                                         
                                             documents['items'][key]['Pack']['textures'] = [a_text,a_text]
-
+                           
                                             
-                                            documents['items'][key]['material'] = "LEATHER_"+list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']].upper()
+                                            documents['items'][key]['material'] = "LEATHER_"+list_type_arror[_s_key].upper()
                                             
                                             nv = a_text.split("/")[2].split("_")[0]                                
         
@@ -309,23 +267,23 @@ class App:
                                             for na in documents['armors_rendering']:
                                                 hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                                 colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png")
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2.png")
+                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png"):
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png")
+                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png"):
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png")
                                                 if 'emissive_1' in documents['armors_rendering'][na]:
-                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png"):
-                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1_e.png")
+                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png"):
+                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png")
                                                 if 'emissive_2' in documents['armors_rendering'][na]:
-                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png"):
-                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_2_e.png")
+                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png"):
+                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png")
 
                                             documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
                                             
                                             
-                                            if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png"):
+                                            if os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png"):
                                                 mode_to_bpp = {"1": 1, "L": 8, "P": 8, "RGB": 24, "RGBA": 32, "CMYK": 32, "YCbCr": 24, "LAB": 24, "HSV": 24, "I": 32, "F": 32}
-                                                im = Image.open(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_armor_layer_1.png") 
+                                                im = Image.open(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png") 
                                                 texture_size = mode_to_bpp[im.mode]
                                             
 
@@ -340,9 +298,6 @@ class App:
 
 
                                         
-                                            
-                                            # if not os.path.exists(f"Oraxen/settings.yml"):
-                                            #     shutil.copy(f"Oraxen_settings.yml", f"Oraxen/settings.yml")
                                     else:
                                     
                                         # gen 2d item
@@ -391,10 +346,10 @@ class App:
                                     if 'armor' in documents['items'][key]['specific_properties']:
                                             vv = documents['items'].pop(key)
                                             nv = a_text.split("/")[2].split("_")[0]
-                                            nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot']]
+                                            nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot'].lower()]
                                             documents['items'][nk] = vv
                                             documents['items'][nk].pop('specific_properties')
-                                        
+                            get_file = get_config
                             with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
                                 documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
                             with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'r') as file :
@@ -405,16 +360,17 @@ class App:
 
                             print("Convet file "+get_file) 
                             self.GLabel_225["text"] = "Convet file "+get_file
-            self.progress['value'] = 100
             # mege file
             data  = ''
-            for get_file in os.listdir(r'Oraxen\\items\\'):
-                    with open(r'Oraxen\\items\\'+get_file, 'r') as file :
+            for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_namespace+"**.yml"):
+                with open(get_file_ox, 'r') as file :
                         data += file.read()
-                    os.remove(r'Oraxen\\items\\'+get_file)
-            with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
-                file.write(data)   
-            messagebox.showinfo("Info", "convert success")           
+                os.remove(get_file_ox)
+                with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+                    file.write(data)   
+            self.progress['value'] = 100
+            messagebox.showinfo("Info", "convert success")          
+                  
 class YmlDumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(YmlDumper, self).increase_indent(flow, False)
