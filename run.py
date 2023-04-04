@@ -67,23 +67,6 @@ class App:
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
             return 0
-        # if os.path.isdir('./ItemsAdder/contents'):
-        #     if os.path.isdir('./ItemsAdder/data'):
-        #         shutil.rmtree('./ItemsAdder/data')
-        #         os.mkdir('./ItemsAdder/data') 
-        #         os.mkdir('./ItemsAdder/data/items_packs')
-
-                
-        #     for get_namespace in os.listdir('./ItemsAdder/contents'):
-        #         shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/configs','./ItemsAdder/data/items_packs/'+get_namespace)
-        #         if os.path.isdir('./ItemsAdder/contents/'+get_namespace+'/resourcepack/assets'):
-        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack')
-        #         else:
-        #             shutil.copytree('./ItemsAdder/contents/'+get_namespace+'/resourcepack','./ItemsAdder/data/resource_pack/assets')
-
-        #         # print(get_namespace)
-        #     shutil.rmtree('./ItemsAdder/contents')
-        # exit()
         self.progress['value'] = 10
         if os.path.isdir('./Oraxen'):
             shutil.rmtree('./Oraxen')
