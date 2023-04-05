@@ -360,6 +360,19 @@ class App:
 
                             print("Convet file "+get_file) 
                             self.GLabel_225["text"] = "Convet file "+get_file
+                        elif  'font_images' in documents:
+                            data_icon = {}
+                            for key in list(documents['font_images']):
+   
+                                data_icon[key] = {
+                                    # 'ascent': documents['font_images'][key]['y_position'],
+                                    'is_emoji': True,
+                                    'texture': get_namespace+"/"+documents['font_images'][key]['path']+".png"
+                                    }
+                                
+                                
+                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_config, 'w') as file:
+                                documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False)
             # mege file
             data  = ''
             for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_namespace+"**.yml"):
