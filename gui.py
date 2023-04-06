@@ -72,7 +72,7 @@ class App:
             shutil.rmtree('./Oraxen')
         if not os.path.isdir('./Oraxen'):
             os.mkdir('./Oraxen') 
-            os.mkdir('./Oraxen/items') 
+            
             os.mkdir('./Oraxen/pack') 
             os.mkdir('./Oraxen/pack/models') 
             os.mkdir('./Oraxen/pack/textures')
@@ -125,6 +125,8 @@ class App:
                         documents = yaml.full_load(file)
 
                         if  'items' in documents:
+                            if not os.path.exists("./Oraxen/items"):
+                                os.mkdir('./Oraxen/items') 
                             for key in list(documents['items']):
                                 documents['items'][key]['Pack'] = documents['items'][key].pop('resource')
                                 documents['items'][key]['displayname'] = "\"<White>"+color_to_hex(documents['items'][key].pop('display_name').title() )+"\""
@@ -365,14 +367,22 @@ class App:
                             for key in list(documents['font_images']):
    
                                 data_icon[key] = {
-                                    # 'ascent': documents['font_images'][key]['y_position'],
+                                    'ascent': documents['font_images'][key]['scale_ratio'],
+                                    'height': documents['font_images'][key]['y_position'],
                                     'is_emoji': True,
                                     'texture': get_namespace+"/"+documents['font_images'][key]['path']+".png"
                                     }
                                 
-                                
-                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_config, 'w') as file:
+                            if not os.path.exists(r"Oraxen\\glyphs"):
+                                os.makedirs(r"Oraxen\\glyphs")
+                            with open(r'Oraxen\\glyphs\\'+get_namespace+'_'+get_config, 'w') as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False)
+                                
+            # r"Oraxen\\pack\\models" check null
+            if os.path.exists(r"Oraxen\\pack\\models"):
+                if len(os.listdir(r"Oraxen\\pack\\models"))==0:
+                    shutil.rmtree(r"Oraxen\\pack\\models")
+
             # mege file
             data  = ''
             for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_namespace+"**.yml"):
