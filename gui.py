@@ -145,7 +145,7 @@ class App:
                                     documents['items'][key]['lore'] = l
                                 if documents['items'][key]['Pack']['generate_model'] == False:
 
-                                    documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
+                                    documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material').upper()
 
                                     if 'behaviours' in documents['items'][key]:
                                         if 'furniture' in documents['items'][key]['behaviours']:
@@ -313,7 +313,7 @@ class App:
                                         # gen 2d item
                                         if 'model_id' in documents['items'][key]['Pack']:
                                             documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
-                                        documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
+                                        documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material').upper()
                                         for tr in range(len(documents['items'][key]['Pack']['textures'])):
                                             documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
                                         if 'SHIELD' in documents['items'][key]['material'].upper():
@@ -361,12 +361,12 @@ class App:
                                             documents['items'][nk] = vv
                                             documents['items'][nk].pop('specific_properties')
                             get_file = get_config
-                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
+                            with open(r'Oraxen\\items\\'+get_conntent+'_'+get_file, 'w') as file:
                                 documents = yaml.dump(documents['items'], file, Dumper=YmlDumper, default_flow_style=False)
-                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'r') as file :
+                            with open(r'Oraxen\\items\\'+get_conntent+'_'+get_file, 'r') as file :
                                 filedata = file.read()
                             filedata = filedata.replace("'", '')
-                            with open(r'Oraxen\\items\\'+get_namespace+'_'+get_file, 'w') as file:
+                            with open(r'Oraxen\\items\\'+get_conntent+'_'+get_file, 'w') as file:
                                 file.write(filedata)
 
                             print("Convet file "+get_file) 
@@ -384,21 +384,21 @@ class App:
                                 
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
-                            with open(r'Oraxen\\glyphs\\'+get_namespace+'_'+get_config, 'w') as file:
+                            with open(r'Oraxen\\glyphs\\'+get_conntent+'_'+get_config, 'w') as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False)
 
             # r"Oraxen\\pack\\models" check file count 0
             if os.path.exists(r"Oraxen\\pack\\models"):
                 if len(os.listdir(r"Oraxen\\pack\\models"))==0:
                     shutil.rmtree(r"Oraxen\\pack\\models")
-
+           
             # mege file
             data  = ''
-            for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_namespace+"**.yml"):
+            for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_conntent+"_**.yml"):
                 with open(get_file_ox, 'r') as file :
                         data += file.read()
                 os.remove(get_file_ox)
-                with open(r'Oraxen\\items\\'+get_namespace+".yml", 'w') as file:
+                with open(r'Oraxen\\items\\'+get_conntent+".yml", 'w') as file:
                     file.write(data)   
             self.progress['value'] = 100
             messagebox.showinfo("Info", "convert success")          
