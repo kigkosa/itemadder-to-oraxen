@@ -367,8 +367,8 @@ class App:
                             for key in list(documents['font_images']):
    
                                 data_icon[key] = {
-                                    'ascent': documents['font_images'][key]['scale_ratio'],
-                                    'height': documents['font_images'][key]['y_position'],
+                                    # 'ascent': documents['font_images'][key]['scale_ratio'],
+                                    # 'height': documents['font_images'][key]['y_position'],
                                     'is_emoji': True,
                                     'texture': get_namespace+"/"+documents['font_images'][key]['path']+".png"
                                     }
