@@ -302,11 +302,6 @@ class App:
                                                     data['Pack']['generation']['armor_resolution'] = texture_size
                                                 with open(f"Oraxen/settings.yml",'w') as f:
                                                     yaml.dump(data, f)
-        
-                      
-                                            
-
-
                                         
                                     else:
                                         
