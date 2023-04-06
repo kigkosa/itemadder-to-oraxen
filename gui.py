@@ -377,8 +377,8 @@ class App:
                                 os.makedirs(r"Oraxen\\glyphs")
                             with open(r'Oraxen\\glyphs\\'+get_namespace+'_'+get_config, 'w') as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False)
-                                
-            # r"Oraxen\\pack\\models" check null
+
+            # r"Oraxen\\pack\\models" check file count 0
             if os.path.exists(r"Oraxen\\pack\\models"):
                 if len(os.listdir(r"Oraxen\\pack\\models"))==0:
                     shutil.rmtree(r"Oraxen\\pack\\models")
