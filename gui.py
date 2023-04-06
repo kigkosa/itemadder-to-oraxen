@@ -144,6 +144,7 @@ class App:
                                         l.append(color_to_hex(v))
                                     documents['items'][key]['lore'] = l
                                 if documents['items'][key]['Pack']['generate_model'] == False:
+
                                     documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
 
                                     if 'behaviours' in documents['items'][key]:
@@ -194,6 +195,7 @@ class App:
                                             if documents['items'][key]['Mechanics']['furniture']['limited_placing']['wall'] is True:
                                                 documents['items'][key]['Mechanics']['furniture']['rotation'] = 'NONE'
                                                 documents['items'][key]['Mechanics']['furniture'].pop('barriers')
+                                    
 
 
                                     if 'model_id' in documents['items'][key]['Pack']:
@@ -211,14 +213,16 @@ class App:
                                                 documents['items'][key]['Mechanics'] = {}
                                                 documents['items'][key]['Mechanics']['hat'] = {'enabled': True}
                                     if  'material' in documents['items'][key]:
-                                        if 'SHIELD' in documents['items'][key]['material']:
+                                        
+                                        if 'SHIELD' in documents['items'][key]['material'].upper():
                                             documents['items'][key]['Pack']['blocking_model'] = get_namespace+"/"+documents['items'][key]['Pack']['model']+'_blocking'
-                                        elif 'CROSSBOW' in documents['items'][key]['material']:
-                                            gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+                                        elif 'CROSSBOW' in documents['items'][key]['material'].upper():
 
+                                            gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
+                                            documents['items'][key]['Pack']['firework_model'] = gnd+'_firework'
                                             documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
                                             documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']                            
-                                        elif 'BOW' in documents['items'][key]['material']:
+                                        elif 'BOW' in documents['items'][key]['material'].upper():
                                             gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
                                             
 
@@ -230,7 +234,7 @@ class App:
                                             ]
                                             
 
-                                        elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                        elif 'FISHING_ROD' in documents['items'][key]['material'].upper():
                                             gnd = get_namespace+"/"+documents['items'][key]['Pack']['model']
 
                                             documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
@@ -241,9 +245,10 @@ class App:
                                     
                                 else:
                                     if 'specific_properties' in documents['items'][key]:
-
+                                        
                                         
                                         if 'armor' in documents['items'][key]['specific_properties']:
+                                            
                                             namespace_split = get_namespace.split("_")[0]
                                             list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
                                             # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
@@ -297,25 +302,29 @@ class App:
                                                     data['Pack']['generation']['armor_resolution'] = texture_size
                                                 with open(f"Oraxen/settings.yml",'w') as f:
                                                     yaml.dump(data, f)
+        
+                      
+                                            
 
 
                                         
                                     else:
-                                    
+                                        
                                         # gen 2d item
                                         if 'model_id' in documents['items'][key]['Pack']:
                                             documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                                         documents['items'][key]['material'] = documents['items'][key]['Pack'].pop('material')
                                         for tr in range(len(documents['items'][key]['Pack']['textures'])):
                                             documents['items'][key]['Pack']['textures'][tr] = get_namespace+'/'+documents['items'][key]['Pack']['textures'][tr]
-                                        if 'SHIELD' in documents['items'][key]['material']:
+                                        if 'SHIELD' in documents['items'][key]['material'].upper():
                                             documents['items'][key]['Pack']['blocking_model'] = documents['items'][key]['Pack']['textures'][0]+'_blocking'
                                             documents['items'][key]['Pack']['parent_model'] = "item/shield"
                                             with open(f"Oraxen/pack/models/{documents['items'][key]['Pack']['blocking_model']}.json", "w") as f:
                                                 f.write('{"parent":"builtin/entity","gui_light":"front","textures":{"particle":"'+documents['items'][key]['Pack']['blocking_model']+'"},"display":{"thirdperson_righthand":{"rotation":[45,135,0],"translation":[3.51,11,-2],"scale":[1,1,1]},"thirdperson_lefthand":{"rotation":[45,135,0],"translation":[13.51,3,5],"scale":[1,1,1]},"firstperson_righthand":{"rotation":[0,180,-5],"translation":[-15,5,-11],"scale":[1.25,1.25,1.25]},"firstperson_lefthand":{"rotation":[0,180,-5],"translation":[5,5,-11],"scale":[1.25,1.25,1.25]},"gui":{"rotation":[15,-25,-5],"translation":[2,3,0],"scale":[0.65,0.65,0.65]}}}')
-                                        elif 'CROSSBOW' in documents['items'][key]['material']:
+                                        elif 'CROSSBOW' in documents['items'][key]['material'].upper():
                                             gnd = documents['items'][key]['Pack']['textures'][0]
                                             documents['items'][key]['Pack']['charged_model'] = gnd+'_charged'
+                                            documents['items'][key]['Pack']['firework_model'] = gnd+'_firework'
                                             documents['items'][key]['Pack']['pulling_models'] = [gnd+'_0',gnd+'_1',gnd+'_2']       
 
                                             documents['items'][key]['Pack']["parent_model"] = "item/crossbow"
@@ -323,7 +332,7 @@ class App:
                                                 with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
                                                     f.write('{"parent":"minecraft:item/crossbow","textures":{"layer0":"'+tr+'"}}')
 
-                                        elif 'BOW' in documents['items'][key]['material']:
+                                        elif 'BOW' in documents['items'][key]['material'].upper():
                                             gnd = documents['items'][key]['Pack']['textures'][0]
                                             documents['items'][key]['Pack']["parent_model"] = "item/bow"
                                             documents['items'][key]['Pack']['pulling_models'] = [
@@ -335,7 +344,7 @@ class App:
                                                 with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
                                                     f.write('{"parent":"minecraft:item/bow","textures":{"layer0":"'+tr+'"}}')
 
-                                        elif 'FISHING_ROD' in documents['items'][key]['material']:
+                                        elif 'FISHING_ROD' in documents['items'][key]['material'].upper():
                                             gnd = documents['items'][key]['Pack']['textures'][0]
                                             documents['items'][key]['Pack']['cast_model'] = gnd+'_cast'
                                             documents['items'][key]['Pack']["parent_model"] = "item/handheld_rod"
