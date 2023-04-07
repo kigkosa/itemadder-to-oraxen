@@ -1,4 +1,3 @@
-import json
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
@@ -7,7 +6,6 @@ import shutil
 import os
 import yaml
 import glob
-import requests
 from PIL import Image
 
 class App:
