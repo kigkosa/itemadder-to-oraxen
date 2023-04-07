@@ -62,9 +62,9 @@ class App:
         if not os.path.isdir('./ItemsAdder'):
             os.mkdir('./ItemsAdder') 
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")
-        if not os.path.isdir('./Oraxen_settings.yml'):
-            with open('Oraxen_settings.yml', 'wb') as f:
-                f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/Oraxen_settings.yml').content)
+        # if not os.path.isdir('./Oraxen_settings.yml'):
+        #     with open('Oraxen_settings.yml', 'wb') as f:
+        #         f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/Oraxen_settings.yml').content)
         self.progress['value'] = 0
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
@@ -298,12 +298,12 @@ class App:
 
                                         
                                             # "Oraxen/settings.yml" red file yml
-                                            if not os.path.exists(f"Oraxen/settings.yml"):
-                                                with open("Oraxen_settings.yml",'r') as f:
-                                                    data = yaml.load(f, Loader=yaml.FullLoader)
-                                                    data['Pack']['generation']['armor_resolution'] = texture_size
-                                                with open(f"Oraxen/settings.yml",'w') as f:
-                                                    yaml.dump(data, f)
+                                            # if not os.path.exists(f"Oraxen/settings.yml"):
+                                            #     with open("Oraxen_settings.yml",'r') as f:
+                                            #         data = yaml.load(f, Loader=yaml.FullLoader)
+                                            #         data['Pack']['generation']['armor_resolution'] = texture_size
+                                            #     with open(f"Oraxen/settings.yml",'w') as f:
+                                            #         yaml.dump(data, f)
                                         
                                     else:
                                         
