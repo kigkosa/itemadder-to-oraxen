@@ -12,9 +12,7 @@ from PIL import Image
 
 class App:
     def __init__(self, root):
-        if not os.path.isdir('./Oraxen_settings.yml'):
-            with open('Oraxen_settings.yml', 'wb') as f:
-                f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/Oraxen_settings.yml').content)
+
 
         #setting title
         root.title("Convert Itemadder to Oraxen")
@@ -58,11 +56,15 @@ class App:
 
 
 
+
+
+    def GButton_674_command(self):
         if not os.path.isdir('./ItemsAdder'):
             os.mkdir('./ItemsAdder') 
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")
-
-    def GButton_674_command(self):
+        if not os.path.isdir('./Oraxen_settings.yml'):
+            with open('Oraxen_settings.yml', 'wb') as f:
+                f.write(requests.get('https://raw.githubusercontent.com/kigkosa/itemadder-to-oraxen/master/Oraxen_settings.yml').content)
         self.progress['value'] = 0
         if len(os.listdir('./ItemsAdder'))<=0:
             messagebox.showinfo("Info", "Please dropfile to folder ItemsAdder")                
