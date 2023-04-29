@@ -369,12 +369,12 @@ class App:
                         elif  'font_images' in documents:
                             data_icon = {}
                             for key in list(documents['font_images']):
-   
+                                _emoji = (documents['font_images'][key]['path']+".png").replace(".png.png",".png")
                                 data_icon[key] = {
                                     # 'ascent': documents['font_images'][key]['scale_ratio'],
                                     # 'height': documents['font_images'][key]['y_position'],
                                     'is_emoji': True,
-                                    'texture': get_namespace+"/"+documents['font_images'][key]['path']+".png"
+                                    'texture': get_namespace+"/"+_emoji
                                     }
                                 
                             if not os.path.exists(r"Oraxen\\glyphs"):
