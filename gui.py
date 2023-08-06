@@ -149,9 +149,10 @@ class App:
 
                                     if 'behaviours' in documents['items'][key]:
                                         if 'furniture' in documents['items'][key]['behaviours']:
+
                                             if 'entity' in documents['items'][key]['behaviours']['furniture']:
                                                 documents['items'][key]['behaviours']['furniture'].pop('entity')
-                                            
+
                                             documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
                                             if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
                                                 if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
@@ -179,6 +180,7 @@ class App:
                                                     documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
                                                 documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
+                                                documents['items'][key]['Mechanics']['furniture']['type'] = 'ITEM_FRAME'
                                                 
 
                                             if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
