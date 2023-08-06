@@ -151,7 +151,7 @@ class App:
                                         if 'furniture' in documents['items'][key]['behaviours']:
                                             if 'entity' in documents['items'][key]['behaviours']['furniture']:
                                                 documents['items'][key]['behaviours']['furniture'].pop('entity')
-
+                                            
                                             documents['items'][key]['Mechanics'] = documents['items'][key].pop('behaviours')
                                             if 'solid' in documents['items'][key]['Mechanics']['furniture'] :
                                                 if documents['items'][key]['Mechanics']['furniture']['solid'] == True:
