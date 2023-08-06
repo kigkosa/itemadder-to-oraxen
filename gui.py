@@ -181,6 +181,7 @@ class App:
 
                                                 documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
                                                 documents['items'][key]['Mechanics']['furniture']['type'] = 'ITEM_FRAME'
+                                                documents['items'][key]['Mechanics']['furniture']['drop'] = {'silktouch': False,'loots':[{'oraxen_item':'bonita_chest'}]}
                                                 
 
                                             if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
