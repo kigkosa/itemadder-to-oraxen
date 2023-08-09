@@ -180,8 +180,8 @@ class App:
                                                     documents['items'][key]['Mechanics']['furniture']['limited_placing']['roof'] = pn['ceiling'] 
 
                                                 documents['items'][key]['Mechanics']['furniture']['limited_placing']['type'] = 'DENY'
-                                                documents['items'][key]['Mechanics']['furniture']['type'] = 'ITEM_FRAME'
-                                                documents['items'][key]['Mechanics']['furniture']['drop'] = {'silktouch': False,'loots':[{'oraxen_item':key}]}
+                                            documents['items'][key]['Mechanics']['furniture']['type'] = 'ITEM_FRAME'
+                                            documents['items'][key]['Mechanics']['furniture']['drop'] = {'silktouch': False,'loots':[{'oraxen_item':key}]}
                                                 
 
                                             if 'fixed_rotation' in documents['items'][key]['Mechanics']['furniture'] :
@@ -253,23 +253,36 @@ class App:
                                         if 'armor' in documents['items'][key]['specific_properties']:
                                             
                                             namespace_split = get_namespace.split("_")[0]
+
                                             list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
+                                            name_sp = key
+                                            for x_list_type_arror,key_x_list_type_arror in list_type_arror.items():
+                                                name_sp = name_sp.replace(x_list_type_arror,'')
+                                                name_sp = name_sp.replace(key_x_list_type_arror,'')
+                                            # namespace_split = name_sp
+
                                             # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
                                             
                             
 
                                             armor_part = os.path.dirname(documents['items'][key]['Pack']['textures'][0])
                                             _s_key = documents['items'][key.lower()]['specific_properties']['armor']['slot'].lower()
+                                            
                                             os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_{list_type_arror[_s_key]}.png")
+                                            
+                                            
                                             documents['items'][key]['Pack']['parent_model']= "item/generated"
                                             a_text = get_namespace+"/"+f"{armor_part}/{namespace_split}_{list_type_arror[_s_key]}.png"
+                                            print(a_text)
                                         
                                             documents['items'][key]['Pack']['textures'] = [a_text,a_text]
                            
                                             
                                             documents['items'][key]['material'] = "LEATHER_"+list_type_arror[_s_key].upper()
                                             
-                                            nv = a_text.split("/")[2].split("_")[0]                                
+                                            nv = a_text.split("/")[2].split("_")[0]
+
+                                                 
         
                                             # replace name armor
                                             colors = [] 
@@ -277,17 +290,29 @@ class App:
                                             for na in documents['armors_rendering']:
                                                 hex = documents['armors_rendering'][na]['color'].lstrip('#')
                                                 colors = tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png")
-                                                if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png"):
-                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png")
-                                                if 'emissive_1' in documents['armors_rendering'][na]:
-                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png"):
-                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png")
-                                                if 'emissive_2' in documents['armors_rendering'][na]:
-                                                    if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png"):
-                                                        os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png")
-
+                                                print(documents['armors_rendering'][na]['layer_1'])
+                                                if(os.path.exists(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png')):
+                                                    get_part = documents['armors_rendering'][na]['layer_1'].split('/')
+                                                    get_part.pop()
+                                                    get_part = '/'.join(get_part)
+                                                    print(name_sp)
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{get_part}/{name_sp}_armor_layer_1.png")
+                                                if(os.path.exists(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png')):
+                                                    get_part = documents['armors_rendering'][na]['layer_2'].split('/')
+                                                    get_part.pop()
+                                                    get_part = '/'.join(get_part)
+                                                    print(name_sp)
+                                                    os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{get_part}/{name_sp}_armor_layer_2.png")
+                                                # if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png"):
+                                                #     os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1.png")
+                                                # if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png"):
+                                                #     os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2.png")
+                                                # if 'emissive_1' in documents['armors_rendering'][na]:
+                                                #     if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png"):
+                                                #         os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_1']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_1_e.png")
+                                                # if 'emissive_2' in documents['armors_rendering'][na]:
+                                                #     if not os.path.exists(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png"):
+                                                #         os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['emissive_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{namespace_split}_armor_layer_2_e.png")
                                             documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
                                             
                                             
@@ -355,7 +380,7 @@ class App:
                                     if 'armor' in documents['items'][key]['specific_properties']:
                                             vv = documents['items'].pop(key)
                                             nv = a_text.split("/")[2].split("_")[0]
-                                            nk = nv+'_'+list_type_arror[vv['specific_properties']['armor']['slot'].lower()]
+                                            nk = name_sp+'_'+list_type_arror[vv['specific_properties']['armor']['slot'].lower()]
                                             documents['items'][nk] = vv
                                             documents['items'][nk].pop('specific_properties')
                             get_file = get_config
@@ -392,12 +417,12 @@ class App:
            
             # mege file
             data  = ''
-            for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_conntent+"_**.yml"):
-                with open(get_file_ox, 'r') as file :
-                        data += file.read()
-                os.remove(get_file_ox)
-                with open(r'Oraxen\\items\\'+get_conntent+".yml", 'w') as file:
-                    file.write(data)   
+            # for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_conntent+"_**.yml"):
+            #     with open(get_file_ox, 'r') as file :
+            #             data += file.read()
+            #     os.remove(get_file_ox)
+            #     with open(r'Oraxen\\items\\'+get_conntent+".yml", 'w') as file:
+            #         file.write(data)   
             self.progress['value'] = 100
             messagebox.showinfo("Info", "convert success")          
                   
