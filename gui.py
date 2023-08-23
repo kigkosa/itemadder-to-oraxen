@@ -248,7 +248,8 @@ class App:
                                     
                                 else:
                                     if 'specific_properties' in documents['items'][key]:
-                                        
+                                        if 'model_id' in documents['items'][key]['Pack']:
+                                            documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                                         
                                         if 'armor' in documents['items'][key]['specific_properties']:
                                             
@@ -273,13 +274,15 @@ class App:
                                             os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{name_sp}_{list_type_arror[_s_key]}.png")
                                             shutil.move(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{name_sp}_{list_type_arror[_s_key]}.png",f'Oraxen/pack/textures/{get_namespace}/armors')
                                             
+
                                             
                                             documents['items'][key]['Pack']['parent_model']= "item/generated"
                                             a_text = get_namespace+"/"+f"armors/{name_sp}_{list_type_arror[_s_key]}.png"
                                             print(a_text)
                                         
                                             documents['items'][key]['Pack']['textures'] = [a_text,a_text]
-                           
+
+                                            
                                             
                                             documents['items'][key]['material'] = "LEATHER_"+list_type_arror[_s_key].upper()
                                             
@@ -401,13 +404,18 @@ class App:
                             data_icon = {}
                             for key in list(documents['font_images']):
                                 _emoji = (documents['font_images'][key]['path']+".png").replace(".png.png",".png")
+
+                                im = Image.open('Oraxen/pack/textures/'+get_namespace+"/"+_emoji)
+                                width, height = im.size
+                               
                                 data_icon[key] = {
-                                    # 'ascent': documents['font_images'][key]['scale_ratio'],
-                                    # 'height': documents['font_images'][key]['y_position'],
-                                    'is_emoji': True,
+                                    'height': height,
+                                    'ascent': documents['font_images'][key]['y_position'],                                   
                                     'texture': get_namespace+"/"+_emoji
                                     }
-                                
+                                if height<=64:
+                                    data_icon[key]['is_emoji']= True
+
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
                             with open(r'Oraxen\\glyphs\\'+get_conntent+'_'+get_config, 'w') as file:
