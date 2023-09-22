@@ -402,19 +402,22 @@ class App:
                             self.GLabel_225["text"] = "Convet file "+get_file
                         elif  'font_images' in documents:
                             data_icon = {}
+                            get_namespace = documents['info']['namespace']
                             for key in list(documents['font_images']):
                                 _emoji = (documents['font_images'][key]['path']+".png").replace(".png.png",".png")
-
+                                
                                 im = Image.open('Oraxen/pack/textures/'+get_namespace+"/"+_emoji)
                                 width, height = im.size
                                
                                 data_icon[key] = {
-                                    'height': height,
+                                    # 'height': height,
                                     'ascent': documents['font_images'][key]['y_position'],                                   
                                     'texture': get_namespace+"/"+_emoji
                                     }
                                 if height<=64:
                                     data_icon[key]['is_emoji']= True
+                                else:
+                                    data_icon[key]['height']= height
 
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
