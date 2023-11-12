@@ -79,6 +79,8 @@ class App:
 
         itemadder = './ItemsAdder/contents'
 
+
+        
         for get_conntent in os.listdir(itemadder):
             # print(get_conntent)
             ia_resoure_part = itemadder+"/"+get_conntent+"/resourcepack/"
@@ -120,6 +122,29 @@ class App:
             for get_config_name in os.listdir(ia_config_name):
                 if not get_config_name.endswith('.yml'):
                     ia_config_name = ia_config_name+"/"+get_config_name
+            
+
+            # check categories item
+            categories = []
+            items = []
+            for get_config in os.listdir(ia_config_name):
+                with open(ia_config_name+"/"+get_config) as file:
+                    documents = yaml.full_load(file)
+                    if  'categories' in documents:
+                        for key in list(documents['categories']):
+                            categories = documents['categories'][key]['items']
+                    if  'items' in documents:
+                        for key in list(documents['items']):
+                            items.append(key)
+            for item in items:
+                if documents["info"]["namespace"]+":"+item in categories:
+                    categories.remove(documents["info"]["namespace"]+":"+item)
+            if len(categories)>0:    
+                messagebox.showerror("Error", "\n".join(categories))          
+                return
+
+                    
+                        
             for get_config in os.listdir(ia_config_name):
                 with open(ia_config_name+"/"+get_config) as file:
                         documents = yaml.full_load(file)
@@ -410,6 +435,7 @@ class App:
                                 width, height = im.size
                                
                                 data_icon[key] = {
+                                    'height': documents['font_images'][key]['scale_ratio'],
                                     # 'height': height,
                                     'ascent': documents['font_images'][key]['y_position'],                                   
                                     'texture': get_namespace+"/"+_emoji
