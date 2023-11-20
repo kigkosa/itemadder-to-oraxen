@@ -383,6 +383,8 @@ class App:
 
                                             documents['items'][key]['Pack']["parent_model"] = "item/crossbow"
                                             for tr in documents['items'][key]['Pack']['pulling_models']:
+                                                if (not os.path.exists('Oraxen/pack/models/'+get_namespace)):
+                                                    os.makedirs('Oraxen/pack/models/'+get_namespace)
                                                 with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
                                                     f.write('{"parent":"minecraft:item/crossbow","textures":{"layer0":"'+tr+'"}}')
 
@@ -395,6 +397,8 @@ class App:
                                                     gnd+'_2'
                                             ]
                                             for tr in documents['items'][key]['Pack']['pulling_models']:
+                                                if (not os.path.exists('Oraxen/pack/models/'+get_namespace)):
+                                                    os.makedirs('Oraxen/pack/models/'+get_namespace)
                                                 with open(f"Oraxen/pack/models/{tr}.json", "w") as f:
                                                     f.write('{"parent":"minecraft:item/bow","textures":{"layer0":"'+tr+'"}}')
 
