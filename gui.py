@@ -78,6 +78,11 @@ class App:
             os.mkdir('./Oraxen/pack/textures')
 
         itemadder = './ItemsAdder/contents'
+        if (os.path.exists(itemadder)):
+            if(os.path.exists("./ItemsAdder_old")):
+                shutil.rmtree("./ItemsAdder_old")
+            shutil.copytree("./ItemsAdder","./ItemsAdder_old")
+
 
 
         
@@ -288,7 +293,7 @@ class App:
                                             # namespace_split = name_sp
 
                                             # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
-                                            
+                                            name_sp = name_sp.replace('_','')
                                             
                                             if(not os.path.exists(f'Oraxen/pack/textures/{get_namespace}/armors')):
                                                 os.makedirs(f'Oraxen/pack/textures/{get_namespace}/armors')
@@ -468,6 +473,10 @@ class App:
                 with open(r'Oraxen\\items\\'+get_conntent+".yml", 'w') as file:
                     file.write(data)   
             self.progress['value'] = 100
+            if (os.path.exists('./ItemsAdder')):
+                shutil.rmtree("./ItemsAdder")
+            if (os.path.exists('./ItemsAdder_old')):
+                os.rename('./ItemsAdder_old','./ItemsAdder')
             messagebox.showinfo("Info", "convert success")          
                   
 class YmlDumper(yaml.Dumper):
