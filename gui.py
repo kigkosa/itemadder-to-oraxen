@@ -443,23 +443,25 @@ class App:
                                 
                                 im = Image.open('Oraxen/pack/textures/'+get_namespace+"/"+_emoji)
                                 width, height = im.size
-                               
                                 data_icon[key] = {
                                     'height': documents['font_images'][key]['scale_ratio'],
                                     # 'height': height,
                                     'ascent': documents['font_images'][key]['y_position'],                                   
                                     'texture': get_namespace+"/"+_emoji
                                     }
-                                if height<=64:
-                                    data_icon[key]['is_emoji']= True
-                                else:
-                                    data_icon[key]['height']= height
-
+                                if 'scale_ratio' not in  documents['font_images'][key]:
+                                    if height<=64:
+                                        data_icon[key]['is_emoji']= True
+                                    else:
+                                        data_icon[key]['height']= height
+                                if 'symbol' in documents['font_images'][key]:
+                                    data_icon[key]['char'] = documents['font_images'][key]['symbol']
 
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
-                            with open(r'Oraxen\\glyphs\\'+get_conntent+'_'+get_config, 'w') as file:
-                                documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False)
+                            g_name_file = (get_conntent+'_'+get_config).replace(get_conntent+"_"+get_conntent,get_conntent)
+                            with open(r'Oraxen\\glyphs\\'+g_name_file, 'w',encoding="utf-8") as file:
+                                documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
             # r"Oraxen\\pack\\models" check file count 0
             if os.path.exists(r"Oraxen\\pack\\models"):
@@ -468,6 +470,7 @@ class App:
            
             # mege file
             data  = ''
+
             for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_conntent+"_**.yml"):
                 with open(get_file_ox, 'r') as file :
                         data += file.read()
