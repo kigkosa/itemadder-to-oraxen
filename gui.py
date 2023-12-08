@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from tkinter import ttk
 import tkinter.font as tkFont
@@ -133,7 +134,7 @@ class App:
             categories = []
             items = []
             for get_config in os.listdir(ia_config_name):
-                with open(ia_config_name+"/"+get_config) as file:
+                with open(ia_config_name+"/"+get_config,encoding="utf-8") as file:
                     documents = yaml.full_load(file)
                     if  'categories' in documents:
                         for key in list(documents['categories']):
@@ -151,7 +152,7 @@ class App:
                     
                         
             for get_config in os.listdir(ia_config_name):
-                with open(ia_config_name+"/"+get_config) as file:
+                with open(ia_config_name+"/"+get_config,encoding="utf-8") as file:
                         documents = yaml.full_load(file)
 
                         if  'items' in documents:
@@ -454,6 +455,7 @@ class App:
                                 else:
                                     data_icon[key]['height']= height
 
+
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
                             with open(r'Oraxen\\glyphs\\'+get_conntent+'_'+get_config, 'w') as file:
@@ -475,6 +477,7 @@ class App:
             self.progress['value'] = 100
             if (os.path.exists('./ItemsAdder')):
                 shutil.rmtree("./ItemsAdder")
+            time.sleep(2)
             if (os.path.exists('./ItemsAdder_old')):
                 os.rename('./ItemsAdder_old','./ItemsAdder')
             messagebox.showinfo("Info", "convert success")          
