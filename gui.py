@@ -72,8 +72,7 @@ class App:
         if os.path.isdir('./Oraxen'):
             shutil.rmtree('./Oraxen')
         if not os.path.isdir('./Oraxen'):
-            os.mkdir('./Oraxen') 
-            
+            os.mkdir('./Oraxen')             
             os.mkdir('./Oraxen/pack') 
             os.mkdir('./Oraxen/pack/models') 
             os.mkdir('./Oraxen/pack/textures')
@@ -514,8 +513,7 @@ def color_to_hex(bb):
     for v,c in h_co_s.items():        
         bb=bb.replace(v,'<'+c+'>')
     for v,c in h_co_and.items():
-        bb=bb.replace(v,'<'+c+'>')
-        
+        bb=bb.replace(v,'<'+c+'>')     
 
     return bb
 def hitbox(length,width,height):
@@ -524,7 +522,6 @@ def hitbox(length,width,height):
         for wi in range(width):
             for he in range(height):
                 da.append("{ x: "+str(wi)+", y: "+str(he)+", z: "+str(le)+" }")
-
     return da
 if __name__ == "__main__":
     
