@@ -444,12 +444,14 @@ with console.status("[bold green]Fetching data...") as status:
                                 for minecraft_lang_config_button in documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries']:
                                     documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = re.sub(r":offset_(-?\d+):", r"<shift:\1>", documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button])
                                     for icon_name in data_icon:                                        
-                                        documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button].replace(":"+icon_name+":","<glyph:"+icon_name+">")
-                                    documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = "§f"+documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button]
+                                        documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button].replace(":"+icon_name+":","§f<glyph:"+icon_name+">§r")
+
                                 if not os.path.exists("Oraxen\\pack\\lang"):
                                     os.makedirs("Oraxen\\pack\\lang")
                                 with open(r'Oraxen\\pack\\lang\\en_us.json', 'w',encoding="utf-8") as file:
-                                    json.dump(documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'],file)
+                                    json.dump(documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'],file, ensure_ascii=False)
+                                with open(r'Oraxen\\pack\\lang\\global.json', 'w',encoding="utf-8") as file:
+                                    json.dump(documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'],file, ensure_ascii=False)
 
         # r"Oraxen\\pack\\models" check file count 0
         if os.path.exists(r"Oraxen\\pack\\models"):
