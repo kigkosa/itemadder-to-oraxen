@@ -1,4 +1,6 @@
+import json
 import platform
+import re
 import time
 import shutil
 import os
@@ -92,9 +94,6 @@ with console.status("[bold green]Fetching data...") as status:
     for get_conntent in os.listdir(itemadder):
         status.update(f"[bold yellow] Get {get_conntent} >> start")
         status.update(f"[bold yellow] Get {get_conntent} >> orixen model and textrues gen")
-        # if not os.path.isdir('./Oraxen/pack/models/'+get_conntent):
-        #     os.mkdir('./Oraxen/pack/models/'+get_conntent)
-        #     os.mkdir('./Oraxen/pack/textures/'+get_conntent)
         categories = []
         items = []
         for get_config in list(set(glob.glob(itemadder+"/"+get_conntent+"/**/**/*.yml", recursive = True))):
@@ -436,6 +435,21 @@ with console.status("[bold green]Fetching data...") as status:
                             g_name_file = g_name_file.replace(glyphs_file.split("_")[0]+"_"+glyphs_file.split("_")[0],glyphs_file.split("_")[0])
                             with open(r'Oraxen\\glyphs\\'+g_name_file+'.yml', 'w',encoding="utf-8") as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False, encoding='utf-8', allow_unicode=True)
+        # lang file
+        for get_config in list(set(glob.glob(itemadder+"/"+get_conntent+"/**/**/*.yml", recursive = True))):
+                with open(get_config,encoding="utf-8") as file:
+                        documents = yaml.full_load(file)
+                        if  'minecraft_lang_overwrite' in documents:
+                            for minecraft_lang_config in documents['minecraft_lang_overwrite']:
+                                for minecraft_lang_config_button in documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries']:
+                                    documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = re.sub(r":offset_(-?\d+):", r"<shift:\1>", documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button])
+                                    for icon_name in data_icon:                                        
+                                        documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button].replace(":"+icon_name+":","<glyph:"+icon_name+">")
+                                    documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = "§f"+documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button]
+                                if not os.path.exists("Oraxen\\pack\\lang"):
+                                    os.makedirs("Oraxen\\pack\\lang")
+                                with open(r'Oraxen\\pack\\lang\\en_us.json', 'w',encoding="utf-8") as file:
+                                    json.dump(documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'],file)
 
         # r"Oraxen\\pack\\models" check file count 0
         if os.path.exists(r"Oraxen\\pack\\models"):
