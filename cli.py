@@ -431,8 +431,10 @@ with console.status("[bold green]Fetching data...") as status:
 
                             if not os.path.exists(r"Oraxen\\glyphs"):
                                 os.makedirs(r"Oraxen\\glyphs")
-                            g_name_file = (get_conntent+'_'+get_config).replace(get_conntent+"_"+get_conntent,get_conntent)
-                            with open(r'Oraxen\\glyphs\\'+g_name_file, 'w',encoding="utf-8") as file:
+                            glyphs_file = os.path.basename(get_config)
+                            g_name_file = (get_conntent+'_'+glyphs_file).replace(get_conntent+"_"+get_conntent,get_conntent)
+                            g_name_file = g_name_file.replace(glyphs_file.split("_")[0]+"_"+glyphs_file.split("_")[0],glyphs_file.split("_")[0])
+                            with open(r'Oraxen\\glyphs\\'+g_name_file+'.yml', 'w',encoding="utf-8") as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False, encoding='utf-8', allow_unicode=True)
 
         # r"Oraxen\\pack\\models" check file count 0
