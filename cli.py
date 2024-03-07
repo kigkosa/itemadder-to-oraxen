@@ -257,6 +257,30 @@ with console.status("[bold green]Fetching data...") as status:
                                     
                                 else:
                                     if 'specific_properties' in documents['items'][key]:
+                                        if 'block' in documents['items'][key]["specific_properties"]:
+                                            documents['items'][key]['Pack']['parent_model'] = "block/cube_all"
+                                            documents['items'][key]['Pack']['model'] = key
+                                            documents['items'][key]['Pack']['textures'][0] = get_namespace+"/"+documents['items'][key]['Pack']['textures'][0]
+                                            documents['items'][key]['Mechanics'] = {}
+                                            if 'placed_model' in documents['items'][key]["specific_properties"]['block']:
+                                                if 'type' in documents['items'][key]["specific_properties"]['block']['placed_model']:
+                                                    if 'REAL_NOTE' == documents['items'][key]["specific_properties"]['block']['placed_model']['type']:
+                                                        documents['items'][key]['Mechanics']['noteblock'] = {}
+                                                        documents['items'][key]['Mechanics']['noteblock']['drop'] = {}
+                                                        documents['items'][key]['Mechanics']['noteblock']['drop']["silktouch"] =  False
+                                                        documents['items'][key]['Mechanics']['noteblock']['drop']["loots"] =  [{"oraxen_item": key, "probability": 1.0}]
+                                                        
+                                            if 'sound' in documents['items'][key]["specific_properties"]['block']:
+                                                documents['items'][key]['Mechanics']['noteblock']['block_sounds'] = {}
+                                                if 'place' in documents['items'][key]["specific_properties"]['block']['sound']:
+                                                    documents['items'][key]['Mechanics']['noteblock']['block_sounds']['place_sound'] = "block.stone.place"
+                                                if 'break' in documents['items'][key]["specific_properties"]['block']['sound']:
+                                                    documents['items'][key]['Mechanics']['noteblock']['block_sounds']['break_sound'] = "block.stone.break"
+                                            if 'hardness' in documents['items'][key]["specific_properties"]['block']:
+                                                documents['items'][key]['Mechanics']['noteblock']['hardness'] = documents['items'][key]["specific_properties"]['block']['hardness']
+                                            if 'blast_resistance' in documents['items'][key]["specific_properties"]['block']:
+                                                 documents['items'][key]['Mechanics']['noteblock']['custom_variation'] = documents['items'][key]["specific_properties"]['block']['blast_resistance']
+
                                         if 'model_id' in documents['items'][key]['Pack']:
                                             documents['items'][key]['Pack']['custom_model_data'] = documents['items'][key]['Pack'].pop('model_id')
                                         
@@ -338,6 +362,8 @@ with console.status("[bold green]Fetching data...") as status:
                                                     di = os.listdir(f"Oraxen/pack/textures/{get_namespace}/{del_fd}")
                                                     if len(di) == 0:
                                                         shutil.rmtree(f"Oraxen/pack/textures/{get_namespace}/{del_fd}")
+                                        if 'specific_properties' in documents['items'][key]:
+                                            documents['items'][key].pop('specific_properties')
                                         
                                     else:
                                         
