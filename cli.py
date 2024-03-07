@@ -269,11 +269,13 @@ with console.status("[bold green]Fetching data...") as status:
                                             for x_list_type_arror,key_x_list_type_arror in list_type_arror.items():
                                                 name_sp = name_sp.replace(key_x_list_type_arror,'')
                                                 name_sp = name_sp.replace(x_list_type_arror,'')
+                                            
                                             # namespace_split = name_sp
 
                                             # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
                                             name_sp = name_sp.replace('_','')
-                                            
+                          
+
                                             if(not os.path.exists(f'Oraxen/pack/textures/{get_namespace}/armors')):
                                                 os.makedirs(f'Oraxen/pack/textures/{get_namespace}/armors')
 
@@ -433,6 +435,7 @@ with console.status("[bold green]Fetching data...") as status:
                             glyphs_file = os.path.basename(get_config)
                             g_name_file = (get_conntent+'_'+glyphs_file).replace(get_conntent+"_"+get_conntent,get_conntent)
                             g_name_file = g_name_file.replace(glyphs_file.split("_")[0]+"_"+glyphs_file.split("_")[0],glyphs_file.split("_")[0])
+                            g_name_file = g_name_file.replace(".yml","")
                             with open(r'Oraxen\\glyphs\\'+g_name_file+'.yml', 'w',encoding="utf-8") as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False, encoding='utf-8', allow_unicode=True)
         # lang file
