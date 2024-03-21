@@ -287,6 +287,7 @@ with console.status("[bold green]Fetching data...") as status:
                                         if 'armor' in documents['items'][key]['specific_properties']:
                                             
                                             namespace_split = get_namespace.split("_")[0]
+                                            # print("test")
 
                                             list_type_arror = {"chest":"chestplate","legs":"leggings","feet":"boots","head":"helmet"}
                                             name_sp = key
@@ -362,8 +363,7 @@ with console.status("[bold green]Fetching data...") as status:
                                                     di = os.listdir(f"Oraxen/pack/textures/{get_namespace}/{del_fd}")
                                                     if len(di) == 0:
                                                         shutil.rmtree(f"Oraxen/pack/textures/{get_namespace}/{del_fd}")
-                                        if 'specific_properties' in documents['items'][key]:
-                                            documents['items'][key].pop('specific_properties')
+
                                         
                                     else:
                                         
@@ -412,7 +412,7 @@ with console.status("[bold green]Fetching data...") as status:
                                             with open(f"Oraxen/pack/models/{gnd}_cast.json", "w") as f:
                                                 f.write('{"parent":"minecraft:item/fishing_rod","textures":{"layer0":"'+gnd+'_cast"}}')
                                                 
-                                            
+                                
                             for key in list(documents['items']):
                                 if 'specific_properties' in documents['items'][key]:
                                     if 'armor' in documents['items'][key]['specific_properties']:
@@ -464,11 +464,15 @@ with console.status("[bold green]Fetching data...") as status:
                             g_name_file = g_name_file.replace(".yml","")
                             with open(r'Oraxen\\glyphs\\'+g_name_file+'.yml', 'w',encoding="utf-8") as file:
                                 documents = yaml.dump(data_icon, file, Dumper=YmlDumper, default_flow_style=False, encoding='utf-8', allow_unicode=True)
+        
+        # COMMENT check fonder minecraft
+        if os.path.exists(f"./ItemsAdder/contents/{get_conntent}/resourcepack/assets/minecraft"):
+            shutil.copytree(f"./ItemsAdder/contents/{get_conntent}/resourcepack/assets/minecraft",f"./Oraxen/pack/assets/minecraft", dirs_exist_ok=True)
         # lang file
         for get_config in list(set(glob.glob(itemadder+"/"+get_conntent+"/**/**/*.yml", recursive = True))):
                 with open(get_config,encoding="utf-8") as file:
                         documents = yaml.full_load(file)
-                        if  'minecraft_lang_overwrite' in documents:
+                        if  'minecraft_lang_overwrite' in documents:                                
                             for minecraft_lang_config in documents['minecraft_lang_overwrite']:
                                 for minecraft_lang_config_button in documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries']:
                                     documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button] = re.sub(r":offset_(-?\d+):", r"<shift:\1>", documents['minecraft_lang_overwrite'][minecraft_lang_config]['entries'][minecraft_lang_config_button])
@@ -487,7 +491,7 @@ with console.status("[bold green]Fetching data...") as status:
             if len(os.listdir(r"Oraxen\\pack\\models"))==0:
                 shutil.rmtree(r"Oraxen\\pack\\models")
 
-        # mege file
+        # COMMENT mege file
         data  = ''
 
         for get_file_ox in glob.glob(r'Oraxen\\items\\'+get_conntent+"_**.yml"):

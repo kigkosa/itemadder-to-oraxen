@@ -290,6 +290,7 @@ class App:
                                             for x_list_type_arror,key_x_list_type_arror in list_type_arror.items():
                                                 name_sp = name_sp.replace(key_x_list_type_arror,'')
                                                 name_sp = name_sp.replace(x_list_type_arror,'')
+                                                
                                             # namespace_split = name_sp
 
                                             # print(f"Oraxen/pack/textures/{get_namespace}/armor/{namespace_split}_{list_type_arror[documents['items'][key]['specific_properties']['armor']['slot']]}.png")
@@ -300,7 +301,7 @@ class App:
 
                                             armor_part = os.path.dirname(documents['items'][key]['Pack']['textures'][0])
                                             _s_key = documents['items'][key.lower()]['specific_properties']['armor']['slot'].lower()
-                                            
+                                         
                                             os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['items'][key]['Pack']['textures'][0],f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{name_sp}_{list_type_arror[_s_key]}.png")
                                             shutil.move(f"Oraxen/pack/textures/{get_namespace}/{armor_part}/{name_sp}_{list_type_arror[_s_key]}.png",f'Oraxen/pack/textures/{get_namespace}/armors')
                                             
@@ -343,7 +344,6 @@ class App:
                                                     os.rename(f"Oraxen/pack/textures/{get_namespace}/"+documents['armors_rendering'][na]['layer_2']+'.png', f"Oraxen/pack/textures/{get_namespace}/{get_part}/{name_sp}_armor_layer_2.png")
                                                     shutil.move(f"Oraxen/pack/textures/{get_namespace}/{get_part}/{name_sp}_armor_layer_2.png",f'Oraxen/pack/textures/{get_namespace}/armors')
                                                                                                
-
                                             documents['items'][key]['color'] = f"{colors[0]}, {colors[1]}, {colors[2]}"
                                             
                                             
@@ -418,6 +418,7 @@ class App:
                             for key in list(documents['items']):
                                 if 'specific_properties' in documents['items'][key]:
                                     if 'armor' in documents['items'][key]['specific_properties']:
+                                            print(key)
                                             vv = documents['items'].pop(key)
                                             nv = a_text.split("/")[2].split("_")[0]
                                             nk = name_sp+'_'+list_type_arror[vv['specific_properties']['armor']['slot'].lower()]
