@@ -24,6 +24,7 @@ List the ready features here:
 - convert hat
 - convert furniture solid
 - convert model
+- convert sound
 
 
 
