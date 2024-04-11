@@ -96,7 +96,7 @@ class App:
                 if not os.path.isdir('./Oraxen/pack/models/'+get_namespace):
                     os.mkdir('./Oraxen/pack/models/'+get_namespace)
                     os.mkdir('./Oraxen/pack/textures/'+get_namespace)
-                #get all sound
+                # get all sound
                 if os.path.isdir(ia_resoure_part+"/"+get_namespace+"/sounds"):
                     os.mkdir('./Oraxen/pack/assets')
                     os.mkdir('./Oraxen/pack/assets/'+get_namespace)

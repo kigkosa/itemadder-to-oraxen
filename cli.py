@@ -93,6 +93,14 @@ with console.status("[bold green]Fetching data...") as status:
     console.log(f"[green]Backup file itemadder[/green]")
     for get_conntent in os.listdir(itemadder):
         status.update(f"[bold yellow] Get {get_conntent} >> start")
+        #get all sound
+        for get_sound in list(set(glob.glob(itemadder+"/"+get_conntent+"/**/**/sounds.json", recursive = True))):
+            if os.path.isdir(os.path.dirname(get_sound)+"/sounds"):
+                os.mkdir('./Oraxen/pack/assets')
+                os.mkdir('./Oraxen/pack/assets/'+get_conntent)
+                shutil.copytree(os.path.dirname(get_sound)+"/sounds","./Oraxen/pack/assets/"+get_conntent+"/sounds")
+                shutil.copy(os.path.dirname(get_sound)+"/sounds.json","./Oraxen/pack/assets/"+get_conntent)
+            status.update(f"[bold yellow] Get {get_conntent} >> sound.json")
         status.update(f"[bold yellow] Get {get_conntent} >> orixen model and textrues gen")
         categories = []
         items = []
@@ -490,7 +498,6 @@ with console.status("[bold green]Fetching data...") as status:
         if os.path.exists(r"Oraxen\\pack\\models"):
             if len(os.listdir(r"Oraxen\\pack\\models"))==0:
                 shutil.rmtree(r"Oraxen\\pack\\models")
-
         # COMMENT mege file
         data  = ''
 
